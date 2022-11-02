@@ -11,10 +11,10 @@ class EmployeeUserAdmin(UserAdmin):
     model = EmployeeUser
     list_display = ['username', 'first_name', 'last_name', 'email', 'is_staff']
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('age', )}),
+        (None, {'fields': ('age', 'phone', )}),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('age',)}),
+        (None, {'fields': ('age', 'phone',)}),
     )
 
 admin.site.register(EmployeeUser, EmployeeUserAdmin)

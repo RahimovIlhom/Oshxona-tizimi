@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p></p>
+
+<div class="row">
+    {% for category in categories %}
+  <div class="col-sm-2">
+    <div class="card text-center">
+      <div class="card-body">
+        <h3 class="card-title">{{ category.name }}</h3>
+      </div>
+    </div>
+  </div>
+    {% endfor %}
+</div>
+<p></p>
+
+<div class="row">
+    {% for products in c_products %}
+  <div class="col-sm-2">
+      {% for product in products %}
+      {% if product.discount_price == None %}
+      <button type="button" class="btn btn-outline-primary ">
+              <h4 class="card-title">{{ product.name }}</h4>
+              Narxi: {{ product.price }}so'm
+
+      </button>
+    <p></p>
+      {% endif %}
+      {% endfor %}
+  </div>
+    {% endfor %}
+</div>
+
+
+<div class="row">
+    {% for category in categories %}
+  <div class="col-sm-2">
+    <div class="card text-center">
+      <div class="card-body">
+        <h3 class="card-title">Aksiyadagi {{ category.name }}</h3>
+      </div>
+    </div>
+  </div>
+    {% endfor %}
+</div>
+<p></p>
+
+<div class="row">
+    {% for products in c_products %}
+  <div class="col-sm-2">
+      {% for product in products %}
+      {% if product.discount_price %}
+      <button type="button" class="btn btn-outline-primary ">
+              <h4 class="card-title">{{ product.name }}</h4>
+              Asl narxi: {{ product.price }}so'm<br>
+              Aksiya narxi: {{ product.discount_price }}so'm
+      </button>
+    <p></p>
+      {% endif %}
+      {% endfor %}
+  </div>
+    {% endfor %}
+</div>
+
+
+{% endblock content %}

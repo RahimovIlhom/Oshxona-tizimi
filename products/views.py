@@ -112,3 +112,16 @@ class ProductCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     # user superuser ekanini tekshirish
     def test_func(self):
         return self.request.user.is_superuser
+
+class ProductUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+    model = Product
+    template_name = 'admin_page/update_product.html'
+    fields = ['name', 'price', 'discount_price', 'category',]
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    # user superuser ekanini tekshirish
+    def test_func(self):
+        return self.request.user.is_superuser

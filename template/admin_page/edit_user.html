@@ -4,7 +4,7 @@
 {% block title %}Ma'lumotlarni o'zgartirish{% endblock title %}
 
 {% block content %}
-    <h2>Ma'lumotingizni o'zgartiring!</h2>
+    <h2>Ma'lumotlarni o'zgartirish!</h2>
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}<br>

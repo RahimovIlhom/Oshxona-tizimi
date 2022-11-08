@@ -7,7 +7,7 @@ from .forms import EmployeeUserChangeForm, EmployeeUserCreateForm
 
 class ChangeUserView(UpdateView, LoginRequiredMixin):
     model = EmployeeUser
-    form_class = EmployeeUserChangeForm
+    fields = ['first_name', 'last_name', 'email', 'phone']
     template_name = 'registration/editing.html'
 
     def get_success_url(self):

@@ -5,7 +5,7 @@
 
 <div class="row">
     {% for category in categories %}
-  <div class="col-sm-2">
+  <div class="col-sm-3">
     <div class="card text-center">
       <div class="card-body">
         <h3 class="card-title">{{ category.name }}</h3>
@@ -18,7 +18,7 @@
 
 <div class="row">
     {% for products in c_products %}
-  <div class="col-sm-2">
+  <div class="col-sm-3">
       {% for product in products %}
       {% if product.discount_price == None %}
       <button type="button" class="btn btn-outline-primary ">
@@ -36,7 +36,7 @@
 
 <div class="row">
     {% for category in categories %}
-  <div class="col-sm-2">
+  <div class="col-sm-3">
     <div class="card text-center">
       <div class="card-body">
         <h3 class="card-title">Aksiyadagi {{ category.name }}</h3>
@@ -49,7 +49,7 @@
 
 <div class="row">
     {% for products in c_products %}
-  <div class="col-sm-2">
+  <div class="col-sm-3">
       {% for product in products %}
       {% if product.discount_price %}
       <button type="button" class="btn btn-outline-primary ">

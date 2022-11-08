@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
-{% block title %}Login to the site{% endblock title %}
-
+{% block title %}Saytga kirish{% endblock title %}
 {% block content %}
-    <h2>Login to the site</h2>
+    <h2>Tizimga kirish</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}<br>
-        <button class="btn btn-success ml-2" type="submit">Login</button>
+        {{ form|crispy }}<br>
+        <button class="btn btn-success ml-2" type="submit">Kirish</button>
     </form>
 {% endblock content %}

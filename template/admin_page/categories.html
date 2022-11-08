@@ -20,7 +20,7 @@
   <tbody>
   {% for category in categories %}
     <tr>
-      <th scope="row"><a href="{% url 'admin_edit' user.pk %}">{{ category.name }}</a></th>
+      <th scope="row"><a href="{% url 'update_category' category.pk %}">{{ category.name }}</a></th>
     </tr>
   {% endfor %}
   </tbody>

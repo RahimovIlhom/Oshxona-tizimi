@@ -65,3 +65,26 @@ class CategoryCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     # user superuser ekanini tekshirish
     def test_func(self):
         return self.request.user.is_superuser
+
+class CategoryUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+    model = Category
+    template_name = 'admin_page/update_category.html'
+    fields = ['name']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    # user superuser ekanini tekshirish
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class CategoryDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+    model = Category
+    template_name = 'admin_page/delete_category.html'
+    success_url = reverse_lazy('categories')
+
+    # user superuser ekanini tekshirish
+    def test_func(self):
+        return self.request.user.is_superuser

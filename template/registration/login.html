@@ -6,7 +6,7 @@
     <h2>Login to the site</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form }}<br>
+        {{ form.as_p }}<br>
         <button class="btn btn-success ml-2" type="submit">Login</button>
     </form>
 {% endblock content %}

@@ -3,7 +3,6 @@ from django.db import models
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=50)
-    image = models.ImageField(upload_to="category_image/", blank=True)
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -13,7 +12,6 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
-    photo = models.ImageField(upload_to='images/')
     date = models.DateTimeField(auto_now_add=True)
     price = models.IntegerField()
     discount_price = models.IntegerField(null=True, blank=True)

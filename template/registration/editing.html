@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}Sign up{% endblock title %}
+{% block title %}Ma'lumotlarni o'zgartirish{% endblock title %}
 
 {% block content %}
     <h2>Editing</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form }}<br>
-        <button class="btn btn-success ml-2" type="submit">Send</button>
+        {{ form.as_p }}<br>
+        <button class="btn btn-success ml-2" type="submit">Saqlash</button>
     </form>
 {% endblock content %}

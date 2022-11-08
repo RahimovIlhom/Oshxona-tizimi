@@ -9,7 +9,6 @@
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}<br>
-        <a href="{% url 'deleteuser' user.pk %}" class="btn btn-danger">O'chirish</a>
         <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Saqlash

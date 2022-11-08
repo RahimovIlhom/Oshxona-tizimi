@@ -20,6 +20,7 @@
       <th scope="col">Email address</th>
       <th scope="col">Profession</th>
       <th scope="col">Phone</th>
+      <th scope="col">O'chirmoqchimisiz?</th>
     </tr>
   </thead>
   <tbody>
@@ -31,6 +32,8 @@
       <td>{{ user.email }}</td>
       <td>{{ user.profession }}</td>
       <td>{{ user.phone }}</td>
+      <td>
+        <a href="{% url 'deleteuser' user.pk %}" class="btn btn-danger">O'chirish</a></td>
     </tr>
   {% endfor %}
   </tbody>

@@ -14,7 +14,10 @@
 
     <nav class="navbar navbar-dark bg-dark fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Buxgalter sahifasi</a>
+        <a class="navbar-brand" href="{% url 'admin_page' %}">
+          <img src="/static/assets/img/admin.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
+          Buxgalter sahifasi
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -29,19 +32,25 @@
                 <a class="nav-link active" aria-current="page" href="{% url 'admin_page' %}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="#">Xodimlar</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Katagoriyalar</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Mahsulotlar</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
+                  {{user.username}}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Profilni tahrirlash</a></li>
+                  <li><a class="dropdown-item" href="{% url 'password_change' %}">Parolni o'zgartirish</a></li>
                   <li>
                     <hr class="dropdown-divider">
                   </li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  <li><a class="dropdown-item" href="{% url 'logout' %}">Chiqib ketish</a></li>
                 </ul>
               </li>
             </ul>

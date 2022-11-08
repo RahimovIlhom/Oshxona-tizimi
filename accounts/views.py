@@ -10,9 +10,7 @@ class ChangeUserView(UpdateView, LoginRequiredMixin):
     model = EmployeeUser
     fields = ['first_name', 'last_name', 'email', 'phone']
     template_name = 'registration/editing.html'
-
-    def get_success_url(self):
-        return self.request.META.get('HTTP_REFERER')
+    success_url = reverse_lazy('profession')
 
 
 class CreateUserView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
@@ -28,9 +26,7 @@ class AdminUserChangeView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
     model = EmployeeUser
     fields = ['username', 'first_name', 'last_name', 'email', 'profession', 'phone']
     template_name = 'admin_page/edit_user.html'
-
-    def get_success_url(self):
-        return self.request.META.get('HTTP_REFERER')
+    success_url = reverse_lazy('users')
 
     def test_func(self):
         return self.request.user.is_superuser

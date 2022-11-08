@@ -13,9 +13,21 @@ class ChangeUserView(UpdateView, LoginRequiredMixin):
     def get_success_url(self):
         return self.request.META.get('HTTP_REFERER')
 
+
 class CreateUserView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     form_class = EmployeeUserCreateForm
     template_name = 'registration/adduser.html'
+
+    def get_success_url(self):
+        return self.request.META.get('HTTP_REFERER')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class AdminUserChangeView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+    form_class = EmployeeUserChangeForm
+    template_name = 'admin_page/edit_user.html'
 
     def get_success_url(self):
         return self.request.META.get('HTTP_REFERER')

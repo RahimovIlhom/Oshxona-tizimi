@@ -95,7 +95,7 @@ def products_view(request):
         products = Product.objects.all()
 
         return render(request, 'admin_page/products.html', {
-            'categories': products,
+            'products': products,
         })
     else:
         return redirect('/page/not_found/')

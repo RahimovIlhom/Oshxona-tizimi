@@ -15,12 +15,14 @@
   <thead>
     <tr class="table table-dark">
       <th scope="col">Kategoriya nomi</th>
+      <th scope="col">O'chirmoqchimisiz?</th>
     </tr>
   </thead>
   <tbody>
   {% for category in categories %}
     <tr>
       <th scope="row"><a href="{% url 'update_category' category.pk %}">{{ category.name }}</a></th>
+      <td><a href="{% url 'delete_category' category.pk %}" class="btn btn-danger">O'chirish</a></td>
     </tr>
   {% endfor %}
   </tbody>

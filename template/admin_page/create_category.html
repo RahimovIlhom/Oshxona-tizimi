@@ -4,8 +4,9 @@
 {% block title %}Add category{% endblock title %}
 
 {% block content %}
-    <h3><a href="{% url 'users' %}" class="btn btn-outline-primary">Orqaga</a>
+    <h3><a href="{% url 'categories' %}" class="btn btn-outline-primary">Orqaga</a>
         Yangi kategoriya qo'shish</h3>
+        <p>Kategoriya nomini kiriting</p>
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}<br>

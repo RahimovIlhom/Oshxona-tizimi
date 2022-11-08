@@ -88,3 +88,27 @@ class CategoryDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
     # user superuser ekanini tekshirish
     def test_func(self):
         return self.request.user.is_superuser
+
+
+def products_view(request):
+    if request.user.is_superuser:
+        products = Product.objects.all()
+
+        return render(request, 'admin_page/products.html', {
+            'categories': products,
+        })
+    else:
+        return redirect('/page/not_found/')
+
+class ProductCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
+    model = Product
+    template_name = 'admin_page/create_product.html'
+    fields = ['name', 'price', 'discount_price', 'category',]
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    # user superuser ekanini tekshirish
+    def test_func(self):
+        return self.request.user.is_superuser

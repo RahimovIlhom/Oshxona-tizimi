@@ -1,0 +1,35 @@
+{% extends 'admin_page/admin.html' %}
+
+{% block title %}Mahsulotlar ro'yxati{% endblock title %}
+
+{% block content %}
+
+<nav class="navbar bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'products' %}">O'zgartirish uchun mahsulotni tanlang</a>
+    <a class="btn btn-outline-dark" href="{% url 'add_product' %}" role="button">Mahsulot qo'shish</a>
+  </div>
+</nav>
+<br>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr class="table table-dark">
+      <th scope="col">Mahsulot</th>
+      <th scope="col">Narxi</th>
+      <th scope="col">Chegirma narxi</th>
+      <th scope="col">Kategoriyasi</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for product in products %}
+    <tr>
+      <th scope="row"><a href="{% url 'update_product' product.pk %}">{{ product.name }}</a></th>
+      <td>{{ product.price }}</td>
+      <td>{{ product.discount_price }}</td>
+      <td>{{ product.category }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock content %}

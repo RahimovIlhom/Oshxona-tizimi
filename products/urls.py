@@ -6,6 +6,8 @@ from .views import (professions_page,
                     CategoryCreateView,
                     CategoryUpdateView,
                     CategoryDeleteView,
+                    products_view,
+                    ProductCreateView,
                     )
 
 urlpatterns = [
@@ -16,4 +18,6 @@ urlpatterns = [
     path('accountant/categories/add/', CategoryCreateView.as_view(), name='create_category'),
     path('accountant/categories/update/<int:pk>/', CategoryUpdateView.as_view(), name='update_category'),
     path('accountant/categories/delete/<int:pk>/', CategoryDeleteView.as_view(), name='delete_category'),
+    path('accountant/products/', products_view, name='products'),
+    path('accountant/products/add/', ProductCreateView.as_view(), name='add_product'),
 ]

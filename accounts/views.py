@@ -46,6 +46,10 @@ class DeleteUserView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
     model = EmployeeUser
     template_name = 'admin_page/deleteuser.html'
     success_url = reverse_lazy('users')
+    
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
     def test_func(self):
         return self.request.user.is_superuser

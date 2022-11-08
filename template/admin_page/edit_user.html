@@ -4,7 +4,8 @@
 {% block title %}Ma'lumotlarni o'zgartirish{% endblock title %}
 
 {% block content %}
-    <h2>Ma'lumotlarni o'zgartirish!</h2>
+<h2><a href="{% url 'users' %}" class="btn btn-outline-primary">Orqaga</a>
+    Ma'lumotlarni o'zgartirish!</h2>
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}<br>

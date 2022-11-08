@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'admin_page/admin.html' %}
+{% load crispy_forms_tags %}
 
-</body>
-</html>
+{% block title %}Ma'lumotlarni o'zgartirish{% endblock title %}
+
+{% block content %}
+    <h2>Ma'lumotingizni o'zgartiring!</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}<br>
+        <button class="btn btn-success ml-2" type="submit">Saqlash</button>
+    </form>
+{% endblock content %}

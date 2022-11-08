@@ -26,7 +26,8 @@ class CreateUserView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
 
 
 class AdminUserChangeView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
-    form_class = EmployeeUserChangeForm
+    model = EmployeeUser
+    fields = ['username', 'first_name', 'last_name', 'email', 'profession', 'phone']
     template_name = 'admin_page/edit_user.html'
 
     def get_success_url(self):

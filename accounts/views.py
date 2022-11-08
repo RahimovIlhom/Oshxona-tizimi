@@ -17,7 +17,7 @@ class ChangeUserView(UpdateView, LoginRequiredMixin):
 
 class CreateUserView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     form_class = EmployeeUserCreateForm
-    template_name = 'registration/adduser.html'
+    template_name = 'admin_page/adduser.html'
     success_url = reverse_lazy('users')
 
     def test_func(self):

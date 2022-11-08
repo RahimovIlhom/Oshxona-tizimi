@@ -1,12 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'admin_page/admin.html' %}
+{% load crispy_forms_tags %}
 
-{% block title %}Sign up{% endblock title %}
+{% block title %}Add user{% endblock title %}
 
 {% block content %}
-    <h2>Add user</h2>
+    <h3>Yangi xodim qo'shish</h3>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}<br>
+        {{ form|crispy }}<br>
         <button class="btn btn-success ml-2" type="submit">Qo'shish</button>
     </form>
 {% endblock content %}

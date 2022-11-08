@@ -18,6 +18,7 @@
       <th scope="col">Narxi</th>
       <th scope="col">Chegirma narxi</th>
       <th scope="col">Kategoriyasi</th>
+      <th scope="col">O'chirmoqchimisiz?</th>
     </tr>
   </thead>
   <tbody>
@@ -27,6 +28,7 @@
       <td>{{ product.price }}</td>
       <td>{{ product.discount_price }}</td>
       <td>{{ product.category }}</td>
+      <td><a href="{% url 'delete_product' product.pk %}" class="btn btn-danger">O'chirish</a></td>
     </tr>
   {% endfor %}
   </tbody>

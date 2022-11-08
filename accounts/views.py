@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, UpdateView, DetailView, ListView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from .models import EmployeeUser
@@ -18,9 +18,7 @@ class ChangeUserView(UpdateView, LoginRequiredMixin):
 class CreateUserView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     form_class = EmployeeUserCreateForm
     template_name = 'registration/adduser.html'
-
-    def get_success_url(self):
-        return self.request.META.get('HTTP_REFERER')
+    success_url = reverse_lazy('users')
 
     def test_func(self):
         return self.request.user.is_superuser

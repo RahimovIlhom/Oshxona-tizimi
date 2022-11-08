@@ -3,6 +3,14 @@
 {% block title %}Admin bosh sahifa{% endblock title %}
 
 {% block content %}
+
+<nav class="navbar bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'users' %}">O'zgartirish uchun foydalanuvchini tanlang</a>
+    <a class="btn btn-outline-dark" href="{% url 'adduser' %}" role="button">Xodim qo'shish</a>
+  </div>
+</nav>
+<br>
 <table class="table table-striped table-hover">
   <thead>
     <tr class="table table-dark">

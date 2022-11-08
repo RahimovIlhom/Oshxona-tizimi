@@ -9,6 +9,7 @@ from .views import (professions_page,
                     products_view,
                     ProductCreateView,
                     ProductUpdateView,
+                    ProductDeleteView,
                     )
 
 urlpatterns = [
@@ -22,4 +23,5 @@ urlpatterns = [
     path('accountant/products/', products_view, name='products'),
     path('accountant/products/add/', ProductCreateView.as_view(), name='add_product'),
     path('accountant/products/update/<int:pk>/', ProductUpdateView.as_view(), name='update_product'),
+    path('accountant/products/delete/<int:pk>/', ProductDeleteView.as_view(), name='delete_product'),
 ]

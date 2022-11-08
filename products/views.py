@@ -125,3 +125,12 @@ class ProductUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
     # user superuser ekanini tekshirish
     def test_func(self):
         return self.request.user.is_superuser
+
+class ProductDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+    model = Product
+    template_name = 'admin_page/delete_product.html'
+    success_url = reverse_lazy('products')
+
+    # user superuser ekanini tekshirish
+    def test_func(self):
+        return self.request.user.is_superuser

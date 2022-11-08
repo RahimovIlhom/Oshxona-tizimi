@@ -8,6 +8,7 @@
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}<br>
+        <a href="{% url 'deleteuser' user.pk %}" class="btn btn-danger">O'chirish</a>
         <button class="btn btn-success ml-2" type="submit">Saqlash</button>
     </form>
 {% endblock content %}

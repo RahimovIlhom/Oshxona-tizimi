@@ -5,7 +5,7 @@ class EmployeeUser(AbstractUser):
     phone = models.CharField(max_length=20, null=True, blank=True)
     STATUS = (
         ('cashier', ('kassir')),
-        ('cook', ('oshpaz')),
+        ('chef', ('oshpaz')),
         ('accountant', ('buxgalter')),
     )
 

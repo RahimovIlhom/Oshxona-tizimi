@@ -44,3 +44,12 @@ def all_users_view(request):
         })
     else:
         return redirect('/page/not_found/')
+
+
+class DeleteUserView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+    model = EmployeeUser
+    template_name = 'admin_page/deleteuser.html'
+    success_url = reverse_lazy('users')
+
+    def test_func(self):
+        return self.request.user.is_superuser

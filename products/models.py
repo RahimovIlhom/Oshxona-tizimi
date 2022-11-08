@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import reverse
 
 # Create your models here.
 class Category(models.Model):
@@ -6,6 +7,9 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
+
+    def get_absolute_url(self):
+        return reverse('categories')
 
     def __str__(self):
         return self.name
@@ -19,6 +23,9 @@ class Product(models.Model):
 
     class Meta:
         verbose_name_plural = "Products"
+
+    def get_absolute_url(self):
+        return reverse('products')
 
     def __str__(self):
         return self.name

@@ -1,0 +1,42 @@
+{% extends 'admin_page/admin.html' %}
+
+{% block title %}Xosimlar ro'yxati{% endblock title %}
+
+{% block content %}
+
+<nav class="navbar bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'users' %}">O'zgartirish uchun foydalanuvchini tanlang</a>
+    <a class="btn btn-outline-dark" href="{% url 'adduser' %}" role="button">Xodim qo'shish</a>
+  </div>
+</nav>
+<br>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr class="table table-dark">
+      <th scope="col">Username</th>
+      <th scope="col">First name</th>
+      <th scope="col">Last name</th>
+      <th scope="col">Email address</th>
+      <th scope="col">Profession</th>
+      <th scope="col">Phone</th>
+      <th scope="col">O'chirmoqchimisiz?</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for user in users %}
+    <tr>
+      <th scope="row"><a href="{% url 'admin_edit' user.pk %}">{{ user.username }}</a></th>
+      <td>{{ user.first_name }}</td>
+      <td>{{ user.last_name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.profession }}</td>
+      <td>{{ user.phone }}</td>
+      <td>
+        <a href="{% url 'deleteuser' user.pk %}" class="btn btn-danger">O'chirish</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock content %}

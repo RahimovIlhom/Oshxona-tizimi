@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}Ma'lumotlarni o'zgartirish{% endblock title %}
 
 {% block content %}
-    <h2>Editing</h2>
+    <h2>Ma'lumotingizni o'zgartiring!</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}<br>
+        {{ form|crispy }}<br>
         <button class="btn btn-success ml-2" type="submit">Saqlash</button>
     </form>
 {% endblock content %}

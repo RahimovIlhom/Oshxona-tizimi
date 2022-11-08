@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
 from products.models import Category, Product
 from accounts.models import EmployeeUser
 
@@ -50,3 +52,16 @@ def categories_view(request):
         })
     else:
         return redirect('/page/not_found/')
+
+class CategoryCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
+    model = Category
+    template_name = 'admin_page/create_category.html'
+    fields = ['name', ]
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    # user superuser ekanini tekshirish
+    def test_func(self):
+        return self.request.user.is_superuser

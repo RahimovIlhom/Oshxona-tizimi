@@ -1,0 +1,14 @@
+{% extends 'admin_page/admin.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add category{% endblock title %}
+
+{% block content %}
+    <h3><a href="{% url 'users' %}" class="btn btn-outline-primary">Orqaga</a>
+        Yangi kategoriya qo'shish</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}<br>
+        <button class="btn btn-success ml-2" type="submit">Qo'shish</button>
+    </form>
+{% endblock content %}

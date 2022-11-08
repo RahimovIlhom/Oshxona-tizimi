@@ -1,0 +1,29 @@
+{% extends 'admin_page/admin.html' %}
+
+{% block title %}Kategoriyalar{% endblock title %}
+
+{% block content %}
+
+<nav class="navbar bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'users' %}">O'zgartirish uchun kategoriyani tanlang</a>
+    <a class="btn btn-outline-dark" href="" role="button">Kategoriya qo'shish</a>
+  </div>
+</nav>
+<br>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr class="table table-dark">
+      <th scope="col">Kategoriya nomi</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for category in categories %}
+    <tr>
+      <th scope="row"><a href="{% url 'admin_edit' user.pk %}">{{ category.name }}</a></th>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock content %}

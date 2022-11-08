@@ -39,3 +39,14 @@ def accountant_view(request):
         })
     else:
         return redirect('/page/not_found/')
+
+
+def categories_view(request):
+    if request.user.is_superuser:
+        all_categoies = Category.objects.all()
+
+        return render(request, 'admin_page/categories.html', {
+            'categories': all_categoies,
+        })
+    else:
+        return redirect('/page/not_found/')

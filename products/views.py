@@ -29,3 +29,13 @@ def cashier_view(request):
     else:
         response = redirect('/accounts/login/')
         return response
+
+
+def accountant(request):
+    if request.user.is_superuser or request.user.profession == 'accountant':
+
+        return render(request, 'admin_page/home.html', {
+
+        })
+    else:
+        return redirect('/page/not_found/')

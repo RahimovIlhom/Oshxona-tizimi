@@ -9,4 +9,4 @@ class EmployeeUserCreateForm(UserCreationForm):
 class EmployeeUserChangeForm(UserChangeForm):
     class Meta:
         model = EmployeeUser
-        fields = ['first_name', 'last_name', 'email', 'phone', 'profession']
+        fields = ['username', 'first_name', 'last_name', 'email', 'phone', 'profession', 'password']

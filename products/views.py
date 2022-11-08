@@ -31,7 +31,7 @@ def cashier_view(request):
         return response
 
 
-def accountant(request):
+def accountant_view(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
 
         return render(request, 'admin_page/home.html', {

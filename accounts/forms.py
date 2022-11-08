@@ -4,9 +4,9 @@ from .models import EmployeeUser
 class EmployeeUserCreateForm(UserCreationForm):
     class Meta(UserCreationForm):
         model = EmployeeUser
-        fields = ['username', 'first_name', 'last_name', 'email', 'phone']
+        fields = ['username', 'first_name', 'last_name', 'email', 'phone', 'profession']
 
 class EmployeeUserChangeForm(UserChangeForm):
     class Meta:
         model = EmployeeUser
-        fields = ['first_name', 'last_name', 'email', 'phone']
+        fields = ['first_name', 'last_name', 'email', 'phone', 'profession']

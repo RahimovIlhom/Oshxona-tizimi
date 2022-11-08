@@ -9,12 +9,12 @@ class EmployeeUserAdmin(UserAdmin):
     add_form = EmployeeUserCreateForm
     form = EmployeeUserChangeForm
     model = EmployeeUser
-    list_display = ['username', 'first_name', 'last_name', 'email', 'is_staff']
+    list_display = ['username', 'first_name', 'last_name', 'email', 'profession', 'is_staff']
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('age', 'phone', )}),
+        (None, {'fields': ('phone', 'profession',)}),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('age', 'phone',)}),
+        (None, {'fields': ('phone', 'profession',)}),
     )
 
 admin.site.register(EmployeeUser, EmployeeUserAdmin)

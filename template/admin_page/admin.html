@@ -45,7 +45,7 @@
                   {{user.username}}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark">
-                  <li><a class="dropdown-item" href="#">Profilni tahrirlash</a></li>
+                  <li><a class="dropdown-item" href="{% url 'admin_edit' user.pk %}">Profilni tahrirlash</a></li>
                   <li><a class="dropdown-item" href="{% url 'password_change' %}">Parolni o'zgartirish</a></li>
                   <li>
                     <hr class="dropdown-divider">

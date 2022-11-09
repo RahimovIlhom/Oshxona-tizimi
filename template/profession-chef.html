@@ -10,7 +10,7 @@
 
 <table class="table">
   <thead>
-    <tr>
+    <tr class="table table-dark">
       <th scope="col">Number</th>
       <th scope="col">Mahsulotlar</th>
       <th scope="col">Buyurtma vaqti</th>
@@ -20,12 +20,12 @@
   <tbody>
   {% for basket in baskets %}
     <tr>
-      <th scope="row">{{ basket.number }}</th>
-      <td>{% for product in basket %}
+      <th scope="row">{{ basket.basket.number }}</th>
+      <td>{% for product in basket.products %}
       {{product.name}}
         {% endfor %}
       </td>
-      <td>{{ basket.add_date }}</td>
+      <td>{{ basket.basket.add_date }}</td>
       <td>@mdo</td>
     </tr>
   {% endfor %}

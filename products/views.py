@@ -41,7 +41,7 @@ def chef_view(request):
             for basket in all_baskets:
                 baskets_list.append(basket)
             baskets_list = baskets_list.reverse()
-            return render(request, 'profession_chef.html', {
+            return render(request, 'profession-chef.html', {
                 'baskets': baskets_list,
             })
         else:

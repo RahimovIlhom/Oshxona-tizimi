@@ -8,6 +8,28 @@
   </div>
 </nav>
 
-
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Number</th>
+      <th scope="col">Mahsulotlar</th>
+      <th scope="col">Buyurtma vaqti</th>
+      <th scope="col">Narxi</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for basket in baskets %}
+    <tr>
+      <th scope="row">{{ basket.number }}</th>
+      <td>{% for product in basket %}
+      {{product.name}}
+        {% endfor %}
+      </td>
+      <td>{{ basket.add_date }}</td>
+      <td>@mdo</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
 
 {% endblock content %}

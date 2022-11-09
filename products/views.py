@@ -42,6 +42,8 @@ def chef_view(request):
                 products = Product.objects.filter(basket=basket)
                 basket = basket
                 baskets_list.append({'basket': basket, 'products': products})
+
+            baskets_list.reverse()
             return render(request, 'profession-chef.html', {
                 'baskets': baskets_list,
             })

@@ -44,6 +44,10 @@ def chef_view(request):
             return render(request, 'profession_chef.html', {
                 'baskets': baskets_list,
             })
+        else:
+            return redirect('/page/not_found/')
+    else:
+        return redirect('/accounts/login/')
 
 
 def accountant_view(request):

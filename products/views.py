@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from products.models import Category, Product
+from products.models import Category, Product, Basket
 from accounts.models import EmployeeUser
 
 
@@ -31,6 +31,19 @@ def cashier_view(request):
     else:
         response = redirect('/accounts/login/')
         return response
+
+
+def chef_view(request):
+    if request.user.is_authenticated:
+        if request.user.is_superuser or request.user.profession == 'chef':
+            all_baskets = Basket.objects.all()
+            baskets_list = []
+            for basket in all_baskets:
+                baskets_list.append(basket)
+            baskets_list = baskets_list.reverse()
+            return render(request, 'profession_chef.html', {
+                'baskets': baskets_list,
+            })
 
 
 def accountant_view(request):

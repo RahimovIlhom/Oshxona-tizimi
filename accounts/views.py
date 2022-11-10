@@ -24,6 +24,10 @@ class CreateUserView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = 'admin_page/adduser.html'
     success_url = reverse_lazy('users')
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
     def test_func(self):
         return self.request.user.is_superuser
 
@@ -33,7 +37,6 @@ class SessionIdleTimeout(object):
     """Middle ware to ensure user gets logged out after defined period if inactvity."""
 
     def __init__(self, get_response):
-        print("in init middleware")
         self.get_response = get_response
 
     def __call__(self, request):

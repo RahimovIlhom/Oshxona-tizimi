@@ -78,10 +78,6 @@ class CategoryCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = 'admin_page/create_category.html'
     fields = ['name', ]
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
     # user superuser ekanini tekshirish
     def test_func(self):
         return self.request.user.is_superuser
@@ -124,10 +120,6 @@ class ProductCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     model = Product
     template_name = 'admin_page/create_product.html'
     fields = ['name', 'price', 'discount_price', 'category',]
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
 
     # user superuser ekanini tekshirish
     def test_func(self):

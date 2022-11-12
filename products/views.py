@@ -20,12 +20,13 @@ def cashier_view(request):
     if request.user.is_authenticated:
         if request.user.is_superuser or request.user.profession == 'cashier':
             all_category = Category.objects.all()
-            products = []
+            objects = []
             for category in all_category:
-                products.append(Product.objects.filter(category=category))
+                category_products = Product.objects.filter(category=category)
+                objects.append({'category': category, 'products': category_products})
+
             return render(request, 'profession-cashier.html', {
-                'categories': all_category,
-                'c_products': products,
+                'objects': objects,
             })
         else:
             return redirect('/page/not_found/')

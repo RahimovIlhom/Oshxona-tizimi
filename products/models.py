@@ -29,3 +29,14 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+class Basket(models.Model):
+    number = models.IntegerField()
+    products = models.ManyToManyField(Product)
+    add_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Savat"
+
+    def __str__(self):
+        return f"{self.number}"

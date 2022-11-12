@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% block title %}Profession page{% endblock title %}
 {% block content %}
 <h1></h1>
 
@@ -15,7 +15,7 @@
 <div class="card" style="width: 18rem;">
   <div class="card-body">
     <h5 class="card-title">Oshpaz uchun</h5>
-    <a class="btn btn-primary" href="" role="button">Kirish</a>
+    <a class="btn btn-primary" href="{% url 'chef' %}" role="button">Kirish</a>
   </div>
 </div>
 

@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from products.models import Category, Product
+from products.models import Category, Product, Basket
 from accounts.models import EmployeeUser
 
 
@@ -33,6 +33,26 @@ def cashier_view(request):
         return response
 
 
+def chef_view(request):
+    if request.user.is_authenticated:
+        if request.user.is_superuser or request.user.profession == 'chef':
+            all_baskets = Basket.objects.all()
+            baskets_list = []
+            for basket in all_baskets:
+                products = Product.objects.filter(basket=basket)
+                basket = basket
+                baskets_list.append({'basket': basket, 'products': products})
+
+            baskets_list.reverse()
+            return render(request, 'profession-chef.html', {
+                'baskets': baskets_list,
+            })
+        else:
+            return redirect('/page/not_found/')
+    else:
+        return redirect('/accounts/login/')
+
+
 def accountant_view(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
 
@@ -44,7 +64,7 @@ def accountant_view(request):
 
 
 def categories_view(request):
-    if request.user.is_superuser:
+    if request.user.is_superuser or request.user.profession == 'accountant':
         all_categoies = Category.objects.all()
 
         return render(request, 'admin_page/categories.html', {
@@ -57,10 +77,6 @@ class CategoryCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     model = Category
     template_name = 'admin_page/create_category.html'
     fields = ['name', ]
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
 
     # user superuser ekanini tekshirish
     def test_func(self):
@@ -91,7 +107,7 @@ class CategoryDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
 
 
 def products_view(request):
-    if request.user.is_superuser:
+    if request.user.is_superuser or request.user.profession == 'accountant':
         products = Product.objects.all()
 
         return render(request, 'admin_page/products.html', {
@@ -104,10 +120,6 @@ class ProductCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     model = Product
     template_name = 'admin_page/create_product.html'
     fields = ['name', 'price', 'discount_price', 'category',]
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
 
     # user superuser ekanini tekshirish
     def test_func(self):

@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Chef page{% endblock title %}
+{% block content %}
+<p></p>
+<nav class="navbar bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'chef' %}">Buyurtmalar. Buyurtma tayyor bo'lganidan so'ng 'bajarildi' tugmasini bosing.</a>
+  </div>
+</nav>
 
-</body>
-</html>
+<table class="table">
+  <thead>
+    <tr class="table table-dark">
+      <th scope="col">Number</th>
+      <th scope="col">Mahsulotlar</th>
+      <th scope="col">Buyurtma vaqti</th>
+      <th scope="col">Holati</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for basket in baskets %}
+    <tr>
+      <th scope="row">{{ basket.basket.number }}</th>
+      <td>{% for product in basket.products %}
+        <button type="button" class="btn btn-light">
+            {{product.name}} <span class="badge text-bg-secondary">1</span>
+        </button>
+
+        {% endfor %}
+      </td>
+      <td>{{ basket.basket.add_date }}</td>
+      <td><button type="button" class="btn btn-success">Success</button></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock content %}

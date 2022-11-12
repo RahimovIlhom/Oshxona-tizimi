@@ -64,7 +64,10 @@ def accountant_view(request):
             products = Product.objects.filter(basket=basket)
             summa = 0
             for product in products:
-                summa += product.price
+                if product.discount_price:
+                    summa += product.discount_price
+                else:
+                    summa += product.price
             baskets_list.append({'basket': basket, 'products': products, 'price': summa})
             umumiy_summa += summa
         return render(request, 'admin_page/home.html', {
@@ -84,7 +87,10 @@ def accountant_view1(request):
             products = Product.objects.filter(basket=basket)
             summa = 0
             for product in products:
-                summa += product.price
+                if product.discount_price:
+                    summa += product.discount_price
+                else:
+                    summa += product.price
             baskets_list.append({'basket': basket, 'products': products, 'price': summa})
             umumiy_summa += summa
         return render(request, 'admin_page/home1.html', {
@@ -105,7 +111,10 @@ def accountant_view2(request):
             products = Product.objects.filter(basket=basket)
             summa = 0
             for product in products:
-                summa += product.price
+                if product.discount_price:
+                    summa += product.discount_price
+                else:
+                    summa += product.price
             baskets_list.append({'basket': basket, 'products': products, 'price': summa})
             umumiy_summa += summa
         return render(request, 'admin_page/home2.html', {

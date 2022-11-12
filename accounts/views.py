@@ -69,7 +69,7 @@ class AdminUserChangeView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
 
 
 def all_users_view(request):
-    if request.user.is_superuser:
+    if request.user.is_superuser or request.user.profession == 'accountant':
         all_users = EmployeeUser.objects.all()
         return render(request, 'admin_page/users.html', {
             'users': all_users,

@@ -64,7 +64,7 @@ def accountant_view(request):
 
 
 def categories_view(request):
-    if request.user.is_superuser:
+    if request.user.is_superuser or request.user.profession == 'accountant':
         all_categoies = Category.objects.all()
 
         return render(request, 'admin_page/categories.html', {
@@ -107,7 +107,7 @@ class CategoryDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
 
 
 def products_view(request):
-    if request.user.is_superuser:
+    if request.user.is_superuser or request.user.profession == 'accountant':
         products = Product.objects.all()
 
         return render(request, 'admin_page/products.html', {

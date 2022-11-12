@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+img {
+  max-width: 100%;
+}
+body {
+  font-family: "Poppins", sans-serif;
+  background: #81f7ff;
+  min-height: 150vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.register{
+  background-color: #000000;
+  width: 500px;
+  height: auto;
+  padding: 80px 40px;
+  border-radius: 10px;
+  box-shadow: 5px -5px 10px white;
+}
+.register__title {
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 42px;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+.register__subtitle {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: center;
+  color: #c4c4c4;
+  margin-bottom: 30px;
+}
+label p {
+  color: white;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+label input {
+  width: 100%;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+.forgot__link {
+  display: block;
+  margin-left: 55%;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ea4335;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+.form__button {
+  width: 100%;
+  background: #29b6f6;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 22px;
+  padding: 15px 120px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.accounts__links{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.account__link {
+  margin-right: 30px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #616161;
+  text-decoration: none;
+}
+.login__link {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: center;
+  color: #d9d9d9;
+  text-decoration: none;
+}

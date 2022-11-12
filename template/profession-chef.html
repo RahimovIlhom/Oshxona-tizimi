@@ -14,7 +14,7 @@
       <th scope="col">Number</th>
       <th scope="col">Mahsulotlar</th>
       <th scope="col">Buyurtma vaqti</th>
-      <th scope="col">Narxi</th>
+      <th scope="col">Holati</th>
     </tr>
   </thead>
   <tbody>
@@ -22,11 +22,14 @@
     <tr>
       <th scope="row">{{ basket.basket.number }}</th>
       <td>{% for product in basket.products %}
-      {{product.name}}
+        <button type="button" class="btn btn-light">
+            {{product.name}} <span class="badge text-bg-secondary">1</span>
+        </button>
+
         {% endfor %}
       </td>
       <td>{{ basket.basket.add_date }}</td>
-      <td>@mdo</td>
+      <td><button type="button" class="btn btn-success">Success</button></td>
     </tr>
   {% endfor %}
   </tbody>

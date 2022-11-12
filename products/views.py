@@ -73,7 +73,7 @@ def categories_view(request):
     else:
         return redirect('/page/not_found/')
 
-class CategoryCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
+class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Category
     template_name = 'admin_page/create_category.html'
     fields = ['name', ]
@@ -82,7 +82,7 @@ class CategoryCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
 
-class CategoryUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Category
     template_name = 'admin_page/update_category.html'
     fields = ['name']
@@ -96,7 +96,7 @@ class CategoryUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
         return self.request.user.is_superuser
 
 
-class CategoryDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+class CategoryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Category
     template_name = 'admin_page/delete_category.html'
     success_url = reverse_lazy('categories')
@@ -116,7 +116,7 @@ def products_view(request):
     else:
         return redirect('/page/not_found/')
 
-class ProductCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
+class ProductCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Product
     template_name = 'admin_page/create_product.html'
     fields = ['name', 'price', 'discount_price', 'category',]
@@ -125,7 +125,7 @@ class ProductCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
 
-class ProductUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     template_name = 'admin_page/update_product.html'
     fields = ['name', 'price', 'discount_price', 'category',]
@@ -138,7 +138,7 @@ class ProductUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
 
-class ProductDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
     template_name = 'admin_page/delete_product.html'
     success_url = reverse_lazy('products')

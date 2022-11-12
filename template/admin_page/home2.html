@@ -9,7 +9,7 @@
 </div>
 <nav class="navbar bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'admin_page' %}">Bugungi kunlik buyurtmalar</a>
+    <a class="navbar-brand" href="{% url 'admin_page2' %}">Oxirgi bir oylik buyurtmalar</a>
     <span class="navbar-text-active">
       <h4>Umumiy summa: {{ umumiy_summa }}</h4>
       </span>
@@ -27,7 +27,7 @@
     </tr>
   </thead>
   <tbody>
-  {% for basket in today_baskets %}
+  {% for basket in this_week_baskets %}
     <tr>
       <th scope="row">{{ basket.basket.number }}</th>
       <td>{% for product in basket.products %}

@@ -12,14 +12,14 @@ from django.conf import settings
 # import codesettings
 
 
-class ChangeUserView(UpdateView, LoginRequiredMixin):
+class ChangeUserView(LoginRequiredMixin, UpdateView):
     model = EmployeeUser
     fields = ['first_name', 'last_name', 'email', 'phone']
     template_name = 'registration/editing.html'
     success_url = reverse_lazy('profession')
 
 
-class CreateUserView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
+class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     form_class = EmployeeUserCreateForm
     template_name = 'admin_page/adduser.html'
     success_url = reverse_lazy('users')
@@ -58,7 +58,7 @@ class SessionIdleTimeout(object):
         return response
 
 
-class AdminUserChangeView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+class AdminUserChangeView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = EmployeeUser
     fields = ['username', 'first_name', 'last_name', 'email', 'profession', 'phone']
     template_name = 'admin_page/edit_user.html'
@@ -78,7 +78,7 @@ def all_users_view(request):
         return redirect('/page/not_found/')
 
 
-class DeleteUserView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+class DeleteUserView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = EmployeeUser
     template_name = 'admin_page/deleteuser.html'
     success_url = reverse_lazy('users')

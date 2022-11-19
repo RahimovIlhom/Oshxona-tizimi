@@ -4,6 +4,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from products.models import Category, Product, Basket
+import datetime
 from accounts.models import EmployeeUser
 
 
@@ -19,12 +20,13 @@ def cashier_view(request):
     if request.user.is_authenticated:
         if request.user.is_superuser or request.user.profession == 'cashier':
             all_category = Category.objects.all()
-            products = []
+            objects = []
             for category in all_category:
-                products.append(Product.objects.filter(category=category))
+                category_products = Product.objects.filter(category=category)
+                objects.append({'category': category, 'products': category_products})
+
             return render(request, 'profession-cashier.html', {
-                'categories': all_category,
-                'c_products': products,
+                'objects': objects,
             })
         else:
             return redirect('/page/not_found/')
@@ -40,7 +42,6 @@ def chef_view(request):
             baskets_list = []
             for basket in all_baskets:
                 products = Product.objects.filter(basket=basket)
-                basket = basket
                 baskets_list.append({'basket': basket, 'products': products})
 
             baskets_list.reverse()
@@ -55,9 +56,70 @@ def chef_view(request):
 
 def accountant_view(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
-
+        today = datetime.date.today()
+        today_baskets = Basket.objects.filter(add_date__gte=today)
+        baskets_list = []
+        umumiy_summa = 0
+        for basket in today_baskets:
+            products = Product.objects.filter(basket=basket)
+            summa = 0
+            for product in products:
+                if product.discount_price:
+                    summa += product.discount_price
+                else:
+                    summa += product.price
+            baskets_list.append({'basket': basket, 'products': products, 'price': summa})
+            umumiy_summa += summa
         return render(request, 'admin_page/home.html', {
+            'today_baskets': baskets_list,
+            'umumiy_summa': umumiy_summa,
+        })
+    else:
+        return redirect('/page/not_found/')
 
+def accountant_view1(request):
+    if request.user.is_superuser or request.user.profession == 'accountant':
+        week = datetime.date.today() - datetime.timedelta(days=7)
+        this_week_baskets = Basket.objects.filter(add_date__gte=week)
+        baskets_list = []
+        umumiy_summa = 0
+        for basket in this_week_baskets:
+            products = Product.objects.filter(basket=basket)
+            summa = 0
+            for product in products:
+                if product.discount_price:
+                    summa += product.discount_price
+                else:
+                    summa += product.price
+            baskets_list.append({'basket': basket, 'products': products, 'price': summa})
+            umumiy_summa += summa
+        return render(request, 'admin_page/home1.html', {
+            'this_week_baskets': baskets_list,
+            'umumiy_summa': umumiy_summa,
+        })
+    else:
+        return redirect('/page/not_found/')
+
+
+def accountant_view2(request):
+    if request.user.is_superuser or request.user.profession == 'accountant':
+        week = datetime.date.today() - datetime.timedelta(days=30)
+        this_week_baskets = Basket.objects.filter(add_date__gte=week)
+        baskets_list = []
+        umumiy_summa = 0
+        for basket in this_week_baskets:
+            products = Product.objects.filter(basket=basket)
+            summa = 0
+            for product in products:
+                if product.discount_price:
+                    summa += product.discount_price
+                else:
+                    summa += product.price
+            baskets_list.append({'basket': basket, 'products': products, 'price': summa})
+            umumiy_summa += summa
+        return render(request, 'admin_page/home2.html', {
+            'this_week_baskets': baskets_list,
+            'umumiy_summa': umumiy_summa,
         })
     else:
         return redirect('/page/not_found/')
@@ -73,7 +135,7 @@ def categories_view(request):
     else:
         return redirect('/page/not_found/')
 
-class CategoryCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
+class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Category
     template_name = 'admin_page/create_category.html'
     fields = ['name', ]
@@ -82,7 +144,7 @@ class CategoryCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
 
-class CategoryUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Category
     template_name = 'admin_page/update_category.html'
     fields = ['name']
@@ -96,7 +158,7 @@ class CategoryUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
         return self.request.user.is_superuser
 
 
-class CategoryDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+class CategoryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Category
     template_name = 'admin_page/delete_category.html'
     success_url = reverse_lazy('categories')
@@ -116,7 +178,7 @@ def products_view(request):
     else:
         return redirect('/page/not_found/')
 
-class ProductCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
+class ProductCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Product
     template_name = 'admin_page/create_product.html'
     fields = ['name', 'price', 'discount_price', 'category',]
@@ -125,7 +187,7 @@ class ProductCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
 
-class ProductUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     template_name = 'admin_page/update_product.html'
     fields = ['name', 'price', 'discount_price', 'category',]
@@ -138,7 +200,7 @@ class ProductUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
 
-class ProductDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
     template_name = 'admin_page/delete_product.html'
     success_url = reverse_lazy('products')

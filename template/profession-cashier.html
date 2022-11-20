@@ -17,7 +17,7 @@
                             {% for product in object.products %}
 
                               {% if product.discount_price == None %}
-                              <a href="{% url 'add_to_card' product.id %}" class="btn btn-outline-primary w-30">
+                              <a href="{{ product.get_add_to_card_url }}" class="btn btn-outline-primary w-30">
                                       <h4 class="card-title">{{ product.name }}</h4>
                                       Narxi: {{ product.price }}
 
@@ -39,14 +39,16 @@
                 <h1 class="text-center fs-1 fw-bold text-dark pt-2 mb-3">
                     Xaridlar
                 </h1>
-                {% for object in objects %}
+                {% for object in order_objects %}
+                {% for order_product in object.products %}
                 <ul class="category-list d-flex flex-column mb-3">
                     <li class="purchase-item-fas p-3 d-flex flex-column mb-3 bg-light">
                         <h2 class="category-title mb-3 fs-1 text-success">
-                            {{ object.category.name }}
+                            {{ order_product.product }}
                         </h2>
                     </li>
                 </ul>
+                {% endfor %}
                 {% endfor %}
                 <div class=" d-flex align-items-center justify-content-around all-price">
                     <div class="p-4 text-center bg-light">

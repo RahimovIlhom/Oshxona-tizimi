@@ -34,6 +34,11 @@ class Product(models.Model):
             'id': self.id
         })
 
+    def get_remove_from_card_url(self):
+        return reverse('remove_from_card', kwargs={
+            'id': self.id
+        })
+
     def __str__(self):
         return self.name
 

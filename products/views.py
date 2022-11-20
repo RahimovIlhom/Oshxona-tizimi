@@ -66,6 +66,31 @@ def add_to_card(request, id):
         messages.info(request, "Mahsulot qo'shildi!")
         return redirect('/profession/cashier')
 
+@login_required
+def remove_from_card(request, id):
+    product = get_object_or_404(Product, id=id)
+    order_qs = Order.objects.filter(
+        user=request.user,
+        ordered=False,
+    )
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.products.filter(product__id=product.id).exists():
+            order_product = OrderProduct.objects.filter(
+                product=product,
+                user=request.user,
+                ordered=False,
+            )[0]
+            order.products.remove(order_product)
+            messages.info(request, "Bu mahsulot olib tashlandi!")
+            return redirect('/profession/cashier')
+        else:
+            messages.info(request, "This item was not in your cart")
+            return redirect('/profession/cashier')
+    else:
+        messages.info(request, "You do not have an active order")
+        return redirect('/profession/cashier')
+
 
 def chef_view(request):
     if request.user.is_authenticated:

@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from products.models import Category, Product, Basket
+from products.models import Category, Product, OrderProduct, Order
 import datetime
-from accounts.models import EmployeeUser
 
 
 def professions_page(request):
@@ -15,6 +16,7 @@ def professions_page(request):
     else:
         response = redirect('/accounts/login/')
         return response
+
 
 def cashier_view(request):
     if request.user.is_authenticated:
@@ -34,19 +36,49 @@ def cashier_view(request):
         response = redirect('/accounts/login/')
         return response
 
+@login_required
+def add_to_card(request, id):
+    product = get_object_or_404(Product, id=id)
+    order_product, created = OrderProduct.objects.get_or_create(
+        product=product,
+        user=request.user,
+        ordered=False,
+    )
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.products.filter(product__id=product.id).exists():
+            order_product.quantity += 1
+            order_product.save()
+            messages.info(request, "Bu mahsulot miqdori yangilandi!")
+            return redirect("/profession/cashier")
+        else:
+            order.products.add(order_product)
+            messages.info(request, "Mahsulot qo'shildi!")
+            return redirect('/profession/cashier')
+    else:
+        ordered_date = timezone.now()
+        order = Order.objects.create(
+            user=request.user,
+            ordered_date=ordered_date
+        )
+        order.products.add(order_product)
+        messages.info(request, "Mahsulot qo'shildi!")
+        return redirect('/profession/cashier')
+
 
 def chef_view(request):
     if request.user.is_authenticated:
         if request.user.is_superuser or request.user.profession == 'chef':
-            all_baskets = Basket.objects.all()
-            baskets_list = []
-            for basket in all_baskets:
-                products = Product.objects.filter(basket=basket)
-                baskets_list.append({'basket': basket, 'products': products})
-
-            baskets_list.reverse()
+            # all_baskets = Basket.objects.all()
+            # baskets_list = []
+            # for basket in all_baskets:
+            #     products = Product.objects.filter(basket=basket)
+            #     baskets_list.append({'basket': basket, 'products': products})
+            #
+            # baskets_list.reverse()
             return render(request, 'profession-chef.html', {
-                'baskets': baskets_list,
+                # 'baskets': baskets_list,
             })
         else:
             return redirect('/page/not_found/')
@@ -57,22 +89,22 @@ def chef_view(request):
 def accountant_view(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
         today = datetime.date.today()
-        today_baskets = Basket.objects.filter(add_date__gte=today)
-        baskets_list = []
-        umumiy_summa = 0
-        for basket in today_baskets:
-            products = Product.objects.filter(basket=basket)
-            summa = 0
-            for product in products:
-                if product.discount_price:
-                    summa += product.discount_price
-                else:
-                    summa += product.price
-            baskets_list.append({'basket': basket, 'products': products, 'price': summa})
-            umumiy_summa += summa
+        # today_baskets = Basket.objects.filter(add_date__gte=today)
+        # baskets_list = []
+        # umumiy_summa = 0
+        # for basket in today_baskets:
+        #     products = Product.objects.filter(basket=basket)
+        #     summa = 0
+        #     for product in products:
+        #         if product.discount_price:
+        #             summa += product.discount_price
+        #         else:
+        #             summa += product.price
+        #     baskets_list.append({'basket': basket, 'products': products, 'price': summa})
+        #     umumiy_summa += summa
         return render(request, 'admin_page/home.html', {
-            'today_baskets': baskets_list,
-            'umumiy_summa': umumiy_summa,
+            # 'today_baskets': baskets_list,
+            # 'umumiy_summa': umumiy_summa,
         })
     else:
         return redirect('/page/not_found/')
@@ -80,22 +112,22 @@ def accountant_view(request):
 def accountant_view1(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
         week = datetime.date.today() - datetime.timedelta(days=7)
-        this_week_baskets = Basket.objects.filter(add_date__gte=week)
-        baskets_list = []
-        umumiy_summa = 0
-        for basket in this_week_baskets:
-            products = Product.objects.filter(basket=basket)
-            summa = 0
-            for product in products:
-                if product.discount_price:
-                    summa += product.discount_price
-                else:
-                    summa += product.price
-            baskets_list.append({'basket': basket, 'products': products, 'price': summa})
-            umumiy_summa += summa
+        # this_week_baskets = Basket.objects.filter(add_date__gte=week)
+        # baskets_list = []
+        # umumiy_summa = 0
+        # for basket in this_week_baskets:
+        #     products = Product.objects.filter(basket=basket)
+        #     summa = 0
+        #     for product in products:
+        #         if product.discount_price:
+        #             summa += product.discount_price
+        #         else:
+        #             summa += product.price
+        #     baskets_list.append({'basket': basket, 'products': products, 'price': summa})
+        #     umumiy_summa += summa
         return render(request, 'admin_page/home1.html', {
-            'this_week_baskets': baskets_list,
-            'umumiy_summa': umumiy_summa,
+            # 'this_week_baskets': baskets_list,
+            # 'umumiy_summa': umumiy_summa,
         })
     else:
         return redirect('/page/not_found/')
@@ -104,22 +136,22 @@ def accountant_view1(request):
 def accountant_view2(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
         week = datetime.date.today() - datetime.timedelta(days=30)
-        this_week_baskets = Basket.objects.filter(add_date__gte=week)
-        baskets_list = []
-        umumiy_summa = 0
-        for basket in this_week_baskets:
-            products = Product.objects.filter(basket=basket)
-            summa = 0
-            for product in products:
-                if product.discount_price:
-                    summa += product.discount_price
-                else:
-                    summa += product.price
-            baskets_list.append({'basket': basket, 'products': products, 'price': summa})
-            umumiy_summa += summa
+        # this_week_baskets = Basket.objects.filter(add_date__gte=week)
+        # baskets_list = []
+        # umumiy_summa = 0
+        # for basket in this_week_baskets:
+        #     products = Product.objects.filter(basket=basket)
+        #     summa = 0
+        #     for product in products:
+        #         if product.discount_price:
+        #             summa += product.discount_price
+        #         else:
+        #             summa += product.price
+        #     baskets_list.append({'basket': basket, 'products': products, 'price': summa})
+        #     umumiy_summa += summa
         return render(request, 'admin_page/home2.html', {
-            'this_week_baskets': baskets_list,
-            'umumiy_summa': umumiy_summa,
+            # 'this_week_baskets': baskets_list,
+            # 'umumiy_summa': umumiy_summa,
         })
     else:
         return redirect('/page/not_found/')

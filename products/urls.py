@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (professions_page,
                     cashier_view,
+                    add_to_card,
                     chef_view,
                     accountant_view,
                     accountant_view1,
@@ -18,6 +19,7 @@ from .views import (professions_page,
 urlpatterns = [
     path('', professions_page, name='profession'),
     path('cashier/', cashier_view, name='cashier'),
+    path('add_to_card/<int:id>', add_to_card, name='add_to_card'),
     path('chef/', chef_view, name='chef'),
     path('accountant/day/', accountant_view, name='admin_page'),
     path('accountant/week/', accountant_view1, name='admin_page1'),

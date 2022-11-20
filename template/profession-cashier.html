@@ -17,16 +17,16 @@
                             {% for product in object.products %}
 
                               {% if product.discount_price == None %}
-                              <button type="button" class="btn btn-outline-primary w-30">
+                              <a href="{% url 'add_to_card' product.id %}" class="btn btn-outline-primary w-30">
                                       <h4 class="card-title">{{ product.name }}</h4>
                                       Narxi: {{ product.price }}
 
-                              </button>
+                              </a>
                               {% else %}
-                              <button type="button" class="btn btn-outline-primary w-30">
+                              <a href="{{ product.get_add_to_card_url }}" class="btn btn-outline-primary w-30">
                                       <h4 class="card-title">{{ product.name }}</h4>
                                       Aksiya narxi: {{ product.discount_price }}
-                              </button>
+                              </a>
                               {% endif %}
                             {% endfor %}
                         </div>

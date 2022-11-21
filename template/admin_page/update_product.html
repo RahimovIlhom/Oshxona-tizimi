@@ -4,8 +4,8 @@
 {% block title %}Product update{% endblock title %}
 
 {% block content %}
-<h2><a href="{% url 'products' %}" class="btn btn-outline-primary">Orqaga</a>
-    Mahsulotni o'zgartirish!</h2>
+<div class="col-6 offset-3">
+<h2>Mahsulotni o'zgartirish!</h2>
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}<br>
@@ -13,7 +13,7 @@
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Saqlash
 </button>
-
+<a href="{% url 'products' %}" class="btn btn-outline-primary">Orqaga</a>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -30,4 +30,5 @@
   </div>
 </div>
     </form>
+</div>
 {% endblock content %}

@@ -3,10 +3,18 @@
 
 {% block title %}Saytga kirish{% endblock title %}
 {% block content %}
-    <h2>Tizimga kirish</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form|crispy }}<br>
-        <button class="btn btn-success ml-2" type="submit">Kirish</button>
-    </form>
+<p></p>
+<div class="col-6 offset-3">
+    <div class="bd-example-snippet bd-code-snippet">
+        <div class="bd-example">
+            <h2>Tizimga kirish</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form|crispy }}<br>
+                <button class="btn btn-success ml-2" type="submit">Kirish</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock content %}

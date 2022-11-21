@@ -4,12 +4,14 @@
 {% block title %}Add category{% endblock title %}
 
 {% block content %}
-    <h3><a href="{% url 'categories' %}" class="btn btn-outline-primary">Orqaga</a>
-        Yangi kategoriya qo'shish</h3>
+<div class="col-6 offset-3">
+    <h3>Yangi kategoriya qo'shish</h3>
         <p>Kategoriya nomini kiriting</p>
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}<br>
         <button class="btn btn-success ml-2" type="submit">Qo'shish</button>
+        <a href="{% url 'categories' %}" class="btn btn-outline-primary">Orqaga</a>
     </form>
+</div>
 {% endblock content %}

@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -26,10 +27,17 @@ def cashier_view(request):
             for category in all_category:
                 category_products = Product.objects.filter(category=category)
                 objects.append({'category': category, 'products': category_products})
-
-            return render(request, 'profession-cashier.html', {
-                'objects': objects,
-            })
+            try:
+                order = Order.objects.filter(user=request.user, ordered=False).last()
+                context = {
+                    'objects': objects,
+                    'order_one': order,
+                }
+            except ObjectDoesNotExist:
+                context = {
+                    'objects': objects,
+                }
+            return render(request, 'profession-cashier.html', context)
         else:
             return redirect('/page/not_found/')
     else:
@@ -50,11 +58,11 @@ def add_to_card(request, id):
         if order.products.filter(product__id=product.id).exists():
             order_product.quantity += 1
             order_product.save()
-            messages.info(request, "Bu mahsulot miqdori yangilandi!")
+            # messages.info(request, "Bu mahsulot miqdori yangilandi!")
             return redirect("/profession/cashier")
         else:
             order.products.add(order_product)
-            messages.info(request, "Mahsulot qo'shildi!")
+            # messages.info(request, "Mahsulot qo'shildi!")
             return redirect('/profession/cashier')
     else:
         ordered_date = timezone.now()
@@ -63,7 +71,7 @@ def add_to_card(request, id):
             ordered_date=ordered_date
         )
         order.products.add(order_product)
-        messages.info(request, "Mahsulot qo'shildi!")
+        # messages.info(request, "Mahsulot qo'shildi!")
         return redirect('/profession/cashier')
 
 @login_required
@@ -82,13 +90,14 @@ def remove_from_card(request, id):
                 ordered=False,
             )[0]
             order.products.remove(order_product)
-            messages.info(request, "Bu mahsulot olib tashlandi!")
+            order_product.delete()
+            # messages.info(request, "Bu mahsulot olib tashlandi!")
             return redirect('/profession/cashier')
         else:
-            messages.info(request, "This item was not in your cart")
+            # messages.info(request, "This item was not in your cart")
             return redirect('/profession/cashier')
     else:
-        messages.info(request, "You do not have an active order")
+        # messages.info(request, "You do not have an active order")
         return redirect('/profession/cashier')
 
 

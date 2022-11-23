@@ -43,7 +43,6 @@ class Product(models.Model):
         return self.name
 
 class OrderProduct(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     ordered = models.BooleanField(default=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
@@ -67,12 +66,13 @@ class OrderProduct(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     ref_code = models.IntegerField()
     products = models.ManyToManyField(OrderProduct)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
+    order_completed = models.BooleanField(default=False)
+    order_completed_date = models.DateTimeField(null=True, blank=True)
     cash = models.IntegerField()
     plastic = models.IntegerField(null=True, blank=True)
 
@@ -85,6 +85,12 @@ class Order(models.Model):
             total += order_product.get_final_price()
         return total
 
+    def get_order_price(self):
+        if self.plastic:
+            return self.cash + self.plastic
+        else:
+            return self.cash
+
     def get_products_ordered_url(self):
         return reverse('products_ordered', kwargs={
             'ref_code': self.ref_code
@@ -96,6 +102,21 @@ class Order(models.Model):
         })
 
     def get_absolute_url(self):
-        return reverse('products_ordered', kwargs={
+        if self.plastic:
+            if self.get_total() == (self.plastic + self.cash):
+                return reverse('products_ordered', kwargs={
+                    'ref_code': self.ref_code
+                })
+            else:
+                return reverse('partial_payment', kwargs={
+                    'pk': self.pk
+                })
+        else:
+            return reverse('products_ordered', kwargs={
+                'ref_code': self.ref_code
+            })
+
+    def get_order_completed_url(self):
+        return reverse('order_completed', kwargs={
             'ref_code': self.ref_code
         })

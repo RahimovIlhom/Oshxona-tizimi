@@ -70,19 +70,25 @@ def add_to_card(request, id):
         if order.products.filter(product__id=product.id).exists():
             order_product.quantity += 1
             order_product.save()
+            order.cash = order.get_total()
+            order.save()
             # messages.info(request, "Bu mahsulot miqdori yangilandi!")
             return redirect("/profession/cashier")
         else:
             order.products.add(order_product)
+            order.cash = order.get_total()
+            order.save()
             # messages.info(request, "Mahsulot qo'shildi!")
             return redirect('/profession/cashier')
     else:
         ordered_date = timezone.now()
         new_ref_code = create_ref_code()
+        cash = order_product.get_final_price()
         order = Order.objects.create(
             user=request.user,
             ordered_date=ordered_date,
             ref_code=new_ref_code,
+            cash=cash,
         )
         order.products.add(order_product)
         # messages.info(request, "Mahsulot qo'shildi!")
@@ -137,6 +143,11 @@ def products_ordered(request, ref_code):
                 return redirect("/profession/cashier")
             else:
                 return redirect("/profession/cashier")
+
+class UpdatePartialPaymentView(LoginRequiredMixin, UpdateView):
+    model = Order
+    template_name = 'partial-payment.html'
+    fields = ['cash', 'plastic']
 
 
 def chef_view(request):

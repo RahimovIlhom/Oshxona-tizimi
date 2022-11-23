@@ -73,6 +73,8 @@ class Order(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
+    cash = models.IntegerField()
+    plastic = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return f'Buyurtma raqami-{self.ref_code}, sana:{self.ordered_date.day}-{self.ordered_date.month}-{self.ordered_date.year}'
@@ -84,6 +86,16 @@ class Order(models.Model):
         return total
 
     def get_products_ordered_url(self):
+        return reverse('products_ordered', kwargs={
+            'ref_code': self.ref_code
+        })
+
+    def get_partial_payment_url(self):
+        return reverse('partial_payment', kwargs={
+            'pk': self.pk
+        })
+
+    def get_absolute_url(self):
         return reverse('products_ordered', kwargs={
             'ref_code': self.ref_code
         })

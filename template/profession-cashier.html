@@ -85,12 +85,29 @@
                         </table>
                     </div>
                     <div class="buttons d-flex flex-column justify-content-center">
-                        <a href="{{ order_one.get_products_ordered_url }}" class="pay btn btn-outline-success p-3 mb-2 text-uppercase">
-                            To'landi
-                        </a>
-                        <button class="pay btn btn-outline-success p-3 text-uppercase">
-                            Qisman to'landi
+                        <button type="button" class="pay btn btn-outline-success p-3 mb-2 text-uppercase" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                          To'landi
                         </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title fs-5" id="exampleModalLabel">Haqiqatdan ham buyurtma puli to'landimi?</h5>
+<!--                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                                <a href="{{ order_one.get_products_ordered_url }}" class="btn btn-primary">To'landi</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <a href="{{ order_one.get_partial_payment_url }}" class="pay btn btn-outline-success p-3 text-uppercase">
+                            Qisman to'landi
+                        </a>
+
                     </div>
                 </div>
             </div>

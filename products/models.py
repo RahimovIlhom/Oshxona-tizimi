@@ -68,17 +68,22 @@ class OrderProduct(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    # ref_code = models.IntegerField(blank=True, null=True)
+    ref_code = models.IntegerField()
     products = models.ManyToManyField(OrderProduct)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
 
-    # def __str__(self):
-    #     return self.ref_code
+    def __str__(self):
+        return f'Buyurtma raqami-{self.ref_code}, sana:{self.ordered_date.day}-{self.ordered_date.month}-{self.ordered_date.year}'
 
     def get_total(self):
         total = 0
         for order_product in self.products.all():
             total += order_product.get_final_price()
         return total
+
+    def get_products_ordered_url(self):
+        return reverse('products_ordered', kwargs={
+            'ref_code': self.ref_code
+        })

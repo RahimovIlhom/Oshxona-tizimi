@@ -9,6 +9,18 @@ from django.urls import reverse_lazy
 from products.models import Category, Product, OrderProduct, Order
 import datetime
 
+def create_ref_code():
+    order_last = Order.objects.all().last()
+    if order_last == None:
+        return 1
+    else:
+        order_last_number = order_last.ref_code
+        if order_last_number >= 99:
+            return 1
+        else:
+            number = order_last_number + 1
+            return number
+
 
 def professions_page(request):
     if request.user.is_authenticated:
@@ -54,7 +66,7 @@ def add_to_card(request, id):
     )
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
-        order = order_qs[0]
+        order = order_qs.last()
         if order.products.filter(product__id=product.id).exists():
             order_product.quantity += 1
             order_product.save()
@@ -66,9 +78,11 @@ def add_to_card(request, id):
             return redirect('/profession/cashier')
     else:
         ordered_date = timezone.now()
+        new_ref_code = create_ref_code()
         order = Order.objects.create(
             user=request.user,
-            ordered_date=ordered_date
+            ordered_date=ordered_date,
+            ref_code=new_ref_code,
         )
         order.products.add(order_product)
         # messages.info(request, "Mahsulot qo'shildi!")
@@ -82,7 +96,7 @@ def remove_from_card(request, id):
         ordered=False,
     )
     if order_qs.exists():
-        order = order_qs[0]
+        order = order_qs.last()
         if order.products.filter(product__id=product.id).exists():
             order_product = OrderProduct.objects.filter(
                 product=product,
@@ -99,6 +113,30 @@ def remove_from_card(request, id):
     else:
         # messages.info(request, "You do not have an active order")
         return redirect('/profession/cashier')
+
+@login_required
+def products_ordered(request, ref_code):
+    try:
+        order_qs = Order.objects.filter(user=request.user, ordered=False, ref_code=ref_code)
+    except ObjectDoesNotExist:
+        return redirect("/profession/cashier")
+    else:
+        try:
+            order_products = OrderProduct.objects.filter(user=request.user, ordered=False)
+        except ObjectDoesNotExist:
+            return redirect("/profession/cashier")
+        else:
+            if order_products:
+                for order_product in order_products:
+                    order_product.ordered = True
+                    order_product.save()
+                order = order_qs.last()
+                order.ordered = True
+                order.save()
+                # messages.info(request, "Buyurtma berildi!")
+                return redirect("/profession/cashier")
+            else:
+                return redirect("/profession/cashier")
 
 
 def chef_view(request):

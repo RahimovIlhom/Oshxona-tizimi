@@ -49,6 +49,9 @@ def cashier_view(request):
                 context = {
                     'objects': objects,
                 }
+            today = datetime.date.today()
+            today_orders = Order.objects.filter(ordered_date__gte=today)
+            context['today_orders'] = today_orders
             return render(request, 'profession-cashier.html', context)
         else:
             return redirect('/page/not_found/')

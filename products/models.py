@@ -43,7 +43,6 @@ class Product(models.Model):
         return self.name
 
 class OrderProduct(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     ordered = models.BooleanField(default=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
@@ -67,7 +66,6 @@ class OrderProduct(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     ref_code = models.IntegerField()
     products = models.ManyToManyField(OrderProduct)
     start_date = models.DateTimeField(auto_now_add=True)
@@ -86,6 +84,12 @@ class Order(models.Model):
         for order_product in self.products.all():
             total += order_product.get_final_price()
         return total
+
+    def get_order_price(self):
+        if self.plastic:
+            return self.cash + self.plastic
+        else:
+            return self.cash
 
     def get_products_ordered_url(self):
         return reverse('products_ordered', kwargs={

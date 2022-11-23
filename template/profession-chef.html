@@ -4,7 +4,7 @@
 <p></p>
 <nav class="navbar bg-light">
   <div class="container-fluid">
-    Buyurtmalar. Buyurtma tayyor bo'lganidan so'ng 'bajarildi' tugmasini bosing.
+    <h5>Buyurtmalar. Buyurtma tayyor bo'lganidan so'ng 'Bajarildi' tugmasini bosing. Sana: {{ today }}.</h5>
   </div>
 </nav>
 
@@ -29,8 +29,8 @@
 
         {% endfor %}
       </td>
-      <td>{{ order.ordered_date }}</td>
-      <td>{{ order.order_completed_date }}</td>
+      <td>{{ order.ordered_date.time }}</td>
+      <td>{{ order.order_completed_date.time }}</td>
       {% if order.order_completed %}
         <td><button type="button" class="btn btn-primary" disabled>Bajarilgan</button></td>
       {% else %}

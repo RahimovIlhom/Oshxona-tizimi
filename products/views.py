@@ -40,7 +40,7 @@ def cashier_view(request):
                 category_products = Product.objects.filter(category=category)
                 objects.append({'category': category, 'products': category_products})
             try:
-                order = Order.objects.filter(user=request.user, ordered=False).last()
+                order = Order.objects.filter(ordered=False).last()
                 context = {
                     'objects': objects,
                     'order_one': order,
@@ -61,10 +61,9 @@ def add_to_card(request, id):
     product = get_object_or_404(Product, id=id)
     order_product, created = OrderProduct.objects.get_or_create(
         product=product,
-        user=request.user,
         ordered=False,
     )
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    order_qs = Order.objects.filter(ordered=False)
     if order_qs.exists():
         order = order_qs.last()
         if order.products.filter(product__id=product.id).exists():
@@ -85,7 +84,6 @@ def add_to_card(request, id):
         new_ref_code = create_ref_code()
         cash = order_product.get_final_price()
         order = Order.objects.create(
-            user=request.user,
             ordered_date=ordered_date,
             ref_code=new_ref_code,
             cash=cash,
@@ -98,7 +96,6 @@ def add_to_card(request, id):
 def remove_from_card(request, id):
     product = get_object_or_404(Product, id=id)
     order_qs = Order.objects.filter(
-        user=request.user,
         ordered=False,
     )
     if order_qs.exists():
@@ -106,7 +103,6 @@ def remove_from_card(request, id):
         if order.products.filter(product__id=product.id).exists():
             order_product = OrderProduct.objects.filter(
                 product=product,
-                user=request.user,
                 ordered=False,
             )[0]
             order.products.remove(order_product)
@@ -123,12 +119,12 @@ def remove_from_card(request, id):
 @login_required
 def products_ordered(request, ref_code):
     try:
-        order_qs = Order.objects.filter(user=request.user, ordered=False, ref_code=ref_code)
+        order_qs = Order.objects.filter(ordered=False, ref_code=ref_code)
     except ObjectDoesNotExist:
         return redirect("/profession/cashier")
     else:
         try:
-            order_products = OrderProduct.objects.filter(user=request.user, ordered=False)
+            order_products = OrderProduct.objects.filter(ordered=False)
         except ObjectDoesNotExist:
             return redirect("/profession/cashier")
         else:
@@ -172,6 +168,7 @@ def chef_view(request):
             today = datetime.date.today()
             today_orders = reversed(Order.objects.filter(ordered_date__gte=today, ordered=True))
             return render(request, 'profession-chef.html', {
+                'today': today,
                 'today_orders': today_orders,
             })
         else:
@@ -184,31 +181,28 @@ def accountant_view(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
         today = datetime.date.today()
         today_orders = Order.objects.filter(ordered_date__gte=today)
+        orders_price = list(map(lambda order: order.get_order_price(), today_orders))
+        summa = sum(orders_price)
         return render(request, 'admin_page/home.html', {
-            'today_orders': today_orders,
+            'today': today,
+            'today_orders': reversed(today_orders),
+            'summa': summa,
         })
     else:
         return redirect('/page/not_found/')
 
 def accountant_view1(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
+        today = datetime.date.today()
         week = datetime.date.today() - datetime.timedelta(days=7)
-        # this_week_baskets = Basket.objects.filter(add_date__gte=week)
-        # baskets_list = []
-        # umumiy_summa = 0
-        # for basket in this_week_baskets:
-        #     products = Product.objects.filter(basket=basket)
-        #     summa = 0
-        #     for product in products:
-        #         if product.discount_price:
-        #             summa += product.discount_price
-        #         else:
-        #             summa += product.price
-        #     baskets_list.append({'basket': basket, 'products': products, 'price': summa})
-        #     umumiy_summa += summa
+        week_orders = Order.objects.filter(ordered_date__gte=week)
+        orders_price = list(map(lambda order: order.get_order_price(), week_orders))
+        summa = sum(orders_price)
         return render(request, 'admin_page/home1.html', {
-            # 'this_week_baskets': baskets_list,
-            # 'umumiy_summa': umumiy_summa,
+            'today': today.strftime('%d.%m.%Y'),
+            'week': week.strftime('%d.%m'),
+            'week_orders': reversed(week_orders),
+            'summa': summa,
         })
     else:
         return redirect('/page/not_found/')
@@ -216,23 +210,16 @@ def accountant_view1(request):
 
 def accountant_view2(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
-        week = datetime.date.today() - datetime.timedelta(days=30)
-        # this_week_baskets = Basket.objects.filter(add_date__gte=week)
-        # baskets_list = []
-        # umumiy_summa = 0
-        # for basket in this_week_baskets:
-        #     products = Product.objects.filter(basket=basket)
-        #     summa = 0
-        #     for product in products:
-        #         if product.discount_price:
-        #             summa += product.discount_price
-        #         else:
-        #             summa += product.price
-        #     baskets_list.append({'basket': basket, 'products': products, 'price': summa})
-        #     umumiy_summa += summa
+        today = datetime.date.today()
+        month = datetime.date.today() - datetime.timedelta(days=30)
+        month_orders = Order.objects.filter(ordered_date__gte=month)
+        orders_price = list(map(lambda order: order.get_order_price(), month_orders))
+        summa = sum(orders_price)
         return render(request, 'admin_page/home2.html', {
-            # 'this_week_baskets': baskets_list,
-            # 'umumiy_summa': umumiy_summa,
+            'today': today.strftime('%d.%m.%Y'),
+            'month': month.strftime('%d.%m'),
+            'month_orders': reversed(month_orders),
+            'summa': summa,
         })
     else:
         return redirect('/page/not_found/')
@@ -280,7 +267,7 @@ class CategoryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         return self.request.user.is_superuser
 
-
+@login_required
 def products_view(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
         products = Product.objects.all()

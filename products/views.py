@@ -133,11 +133,13 @@ def products_ordered(request, ref_code):
             return redirect("/profession/cashier")
         else:
             if order_products:
+                ordered_date = timezone.now()
                 for order_product in order_products:
                     order_product.ordered = True
                     order_product.save()
                 order = order_qs.last()
                 order.ordered = True
+                order.ordered_date = ordered_date
                 order.save()
                 # messages.info(request, "Buyurtma berildi!")
                 return redirect("/profession/cashier")
@@ -149,19 +151,28 @@ class UpdatePartialPaymentView(LoginRequiredMixin, UpdateView):
     template_name = 'partial-payment.html'
     fields = ['cash', 'plastic']
 
+@login_required
+def order_completed(request, ref_code):
+    try:
+        order_qs = Order.objects.filter(order_completed=False, ref_code=ref_code)
+    except ObjectDoesNotExist:
+        return redirect("/profession/chef")
+    else:
+        order_complete_date = timezone.now()
+        order_last = order_qs.last()
+        order_last.order_completed = True
+        order_last.order_completed_date = order_complete_date
+        order_last.save()
+        return redirect("/profession/chef")
+
 
 def chef_view(request):
     if request.user.is_authenticated:
         if request.user.is_superuser or request.user.profession == 'chef':
-            # all_baskets = Basket.objects.all()
-            # baskets_list = []
-            # for basket in all_baskets:
-            #     products = Product.objects.filter(basket=basket)
-            #     baskets_list.append({'basket': basket, 'products': products})
-            #
-            # baskets_list.reverse()
+            today = datetime.date.today()
+            today_orders = reversed(Order.objects.filter(ordered_date__gte=today, ordered=True))
             return render(request, 'profession-chef.html', {
-                # 'baskets': baskets_list,
+                'today_orders': today_orders,
             })
         else:
             return redirect('/page/not_found/')
@@ -172,22 +183,9 @@ def chef_view(request):
 def accountant_view(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
         today = datetime.date.today()
-        # today_baskets = Basket.objects.filter(add_date__gte=today)
-        # baskets_list = []
-        # umumiy_summa = 0
-        # for basket in today_baskets:
-        #     products = Product.objects.filter(basket=basket)
-        #     summa = 0
-        #     for product in products:
-        #         if product.discount_price:
-        #             summa += product.discount_price
-        #         else:
-        #             summa += product.price
-        #     baskets_list.append({'basket': basket, 'products': products, 'price': summa})
-        #     umumiy_summa += summa
+        today_orders = Order.objects.filter(ordered_date__gte=today)
         return render(request, 'admin_page/home.html', {
-            # 'today_baskets': baskets_list,
-            # 'umumiy_summa': umumiy_summa,
+            'today_orders': today_orders,
         })
     else:
         return redirect('/page/not_found/')

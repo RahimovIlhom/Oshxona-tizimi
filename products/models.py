@@ -73,6 +73,8 @@ class Order(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
+    order_completed = models.BooleanField(default=False)
+    order_completed_date = models.DateTimeField(null=True, blank=True)
     cash = models.IntegerField()
     plastic = models.IntegerField(null=True, blank=True)
 
@@ -96,6 +98,21 @@ class Order(models.Model):
         })
 
     def get_absolute_url(self):
-        return reverse('products_ordered', kwargs={
+        if self.plastic:
+            if self.get_total() == (self.plastic + self.cash):
+                return reverse('products_ordered', kwargs={
+                    'ref_code': self.ref_code
+                })
+            else:
+                return reverse('partial_payment', kwargs={
+                    'pk': self.pk
+                })
+        else:
+            return reverse('products_ordered', kwargs={
+                'ref_code': self.ref_code
+            })
+
+    def get_order_completed_url(self):
+        return reverse('order_completed', kwargs={
             'ref_code': self.ref_code
         })

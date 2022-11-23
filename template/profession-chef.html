@@ -4,7 +4,7 @@
 <p></p>
 <nav class="navbar bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'chef' %}">Buyurtmalar. Buyurtma tayyor bo'lganidan so'ng 'bajarildi' tugmasini bosing.</a>
+    Buyurtmalar. Buyurtma tayyor bo'lganidan so'ng 'bajarildi' tugmasini bosing.
   </div>
 </nav>
 
@@ -14,22 +14,28 @@
       <th scope="col">Number</th>
       <th scope="col">Mahsulotlar</th>
       <th scope="col">Buyurtma vaqti</th>
+      <th scope="col">Bajarilgan vaqti</th>
       <th scope="col">Holati</th>
     </tr>
   </thead>
   <tbody>
-  {% for basket in baskets %}
+  {% for order in today_orders %}
     <tr>
-      <th scope="row">{{ basket.basket.number }}</th>
-      <td>{% for product in basket.products %}
+      <th scope="row">{{ order.ref_code }}</th>
+      <td>{% for order_product in order.products.all %}
         <button type="button" class="btn btn-light">
-            {{product.name}} <span class="badge text-bg-secondary">1</span>
+            {{ order_product.product.name }} <span class="badge text-bg-secondary">{{ order_product.quantity }}</span>
         </button>
 
         {% endfor %}
       </td>
-      <td>{{ basket.basket.add_date }}</td>
-      <td><button type="button" class="btn btn-success">Success</button></td>
+      <td>{{ order.ordered_date }}</td>
+      <td>{{ order.order_completed_date }}</td>
+      {% if order.order_completed %}
+        <td><button type="button" class="btn btn-primary" disabled>Bajarilgan</button></td>
+      {% else %}
+        <td><a href="{{ order.get_order_completed_url }}" class="btn btn-success">Bajarildi</a></td>
+      {% endif %}
     </tr>
   {% endfor %}
   </tbody>

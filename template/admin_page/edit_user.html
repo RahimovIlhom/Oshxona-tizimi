@@ -4,8 +4,14 @@
 {% block title %}Ma'lumotlarni o'zgartirish{% endblock title %}
 
 {% block content %}
-<h2><a href="{% url 'users' %}" class="btn btn-outline-primary">Orqaga</a>
-    Ma'lumotlarni o'zgartirish!</h2>
+<div class="col-6 offset-3">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="page title">
+                <h3 class="breadcrumb-header">Ma'lumotlarni o'zgartirish!</h3>
+            </div>
+        </div>
+    </div>
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}<br>
@@ -13,6 +19,7 @@
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Saqlash
 </button>
+        <a href="{% url 'users' %}" class="btn btn-outline-primary">Orqaga</a>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -30,4 +37,5 @@
   </div>
 </div>
     </form>
+</div>
 {% endblock content %}

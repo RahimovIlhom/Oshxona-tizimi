@@ -3,29 +3,38 @@
 {% block content %}
 <h1></h1>
 
-<div class="row">
-<div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">Kassir uchun</h5>
-    <a class="btn btn-primary" href="{% url 'cashier' %}" role="button">Kirish</a>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="col">
+    <div class="card h-100">
+      <a href="{% url 'cashier' %}"><img src="/static/assets/img/cash.png" height="340" class="card-img-top" alt="Kassir rasmi"></a>
+      <div class="card-body">
+        <h5 class="card-title">
+    <a class="btn btn-outline-success btn-lg" href="{% url 'cashier' %}" role="button">Kassir sahifasi</a>
+        </h5>
+        </div>
+    </div>
   </div>
-</div>
-
-
-<div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">Oshpaz uchun</h5>
-    <a class="btn btn-primary" href="{% url 'chef' %}" role="button">Kirish</a>
+  <div class="col">
+    <div class="card h-100">
+      <a href="{% url 'chef' %}"><img src="/static/assets/img/oshpaz1.jpg" height="340" class="card-img-top" alt="Oshpaz rasmi"></a>
+      <div class="card-body">
+        <h5 class="card-title">
+    <a class="btn btn-outline-info btn-lg" href="{% url 'chef' %}" role="button">Oshpaz sahifasi</a>
+        </h5>
+      </div>
+    </div>
   </div>
-</div>
-
-
-  <div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">Buxgalter uchun</h5>
-    <a class="btn btn-primary" href="{% url 'admin_page' %}" role="button">Kirish</a>
+  <div class="col">
+    <div class="card h-100">
+      <a href="{% url 'admin_page' %}"><img src="/static/assets/img/buxgalter.png" height="340" class="card-img-top" alt="Buxgalter rasmi"></a>
+      <div class="card-body">
+        <h5 class="card-title">
+    <a class="btn btn-outline-danger btn-lg" href="{% url 'admin_page' %}" role="button">Buxgalter sahifasi</a>
+        </h5>
+        </div>
+    </div>
   </div>
-</div>
+
 </div>
 
 {% endblock content %}

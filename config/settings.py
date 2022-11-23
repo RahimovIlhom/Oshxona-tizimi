@@ -155,5 +155,5 @@ LOGIN_REDIRECT_URL = 'profession'
 LOGOUT_REDIRECT_URL = 'login'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
-SESSION_COOKIE_AGE = 60*60
-SESSION_IDLE_TIMEOUT = True
+# SESSION_COOKIE_AGE = 60*60
+# SESSION_IDLE_TIMEOUT = True

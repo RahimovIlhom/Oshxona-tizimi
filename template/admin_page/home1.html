@@ -34,7 +34,13 @@
 
   {% for order in week_orders %}
     <tr>
-      <th scope="row">{{ order.ref_code }}</th>
+      <th scope="row">
+        {% if order.order_completed %}
+        {{ order.ref_code }}
+        {% else %}
+        <a href="{% url 'order_completed' order.pk %}">{{ order.ref_code }}</a>
+        {% endif %}
+      </th>
       <td>{% for order_product in order.products.all %}
         <button type="button" class="btn btn-warning p-1 mb-2" style="width: 120px;">
             {{ order_product.product.name }} <span class="badge text-bg-secondary">{{ order_product.quantity }}</span>

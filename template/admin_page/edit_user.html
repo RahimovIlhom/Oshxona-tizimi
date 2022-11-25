@@ -16,22 +16,23 @@
         {% csrf_token %}
         {{ form|crispy }}<br>
         <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Saqlash
+<button type="submit" class="btn btn-success">Saqlash</button>
+<a href="{% url 'users' %}" class="btn btn-outline-primary">Orqaga</a>
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  O'chirish
 </button>
-        <a href="{% url 'users' %}" class="btn btn-outline-primary">Orqaga</a>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">O'zgarishlarni saqlaysizmi?</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Haqiqatdan ham {{ object.username }} nomli xodimni o'chirmoqchimisiz?</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
-        <button type="submit" class="btn btn-primary">Saqlash</button>
+        <a href="{{ object.get_delete_user_view_url }}" class="btn btn-danger">O'chirish</a>
       </div>
     </div>
   </div>

@@ -64,7 +64,7 @@ class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
 class AdminUserChangeView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = EmployeeUser
-    fields = ['username', 'first_name', 'last_name', 'email', 'profession', 'phone']
+    fields = ['username', 'first_name', 'last_name', 'email', 'profession', 'phone', 'is_staff', 'is_superuser']
     template_name = 'admin_page/edit_user.html'
     success_url = reverse_lazy('users')
 
@@ -73,7 +73,7 @@ class AdminUserChangeView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 @login_required
 def all_users_view(request):
-    if request.user.is_superuser or request.user.profession == 'accountant':
+    if request.user.is_superuser:
         all_users = EmployeeUser.objects.all()
         return render(request, 'admin_page/users.html', {
             'users': all_users,

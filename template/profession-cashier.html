@@ -114,4 +114,39 @@
         </div>
     </section>
 
+
+<table class="table table-hover">
+  <thead>
+    <tr class="table table-success">
+      <th scope="col">Number</th>
+      <th scope="col">Mahsulotlar</th>
+      <th scope="col">Buyurtma vaqti</th>
+      <th scope="col">Bajarilgan vaqti</th>
+      <th scope="col">Holati</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for order in today_orders %}
+    <tr>
+      <th scope="row">{{ order.ref_code }}</th>
+      <td>{% for order_product in order.products.all %}
+        <button type="button" class="btn btn-warning">
+            <h6>{{ order_product.product.name }} <span class="badge text-bg-secondary">{{ order_product.quantity }}</span></h6>
+        </button>
+
+        {% endfor %}
+      </td>
+      <td>{{ order.ordered_date.time }}</td>
+      <td>{{ order.order_completed_date.time }}</td>
+      {% if order.order_completed %}
+        <td><button type="button" class="btn btn-primary" disabled  style="width: 150px;">Tayyor</button></td>
+      {% else %}
+        <td><button type="button" class="btn btn-success" disabled  style="width: 150px;">Tayyorlanmoqda...</button></td>
+      {% endif %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
 {% endblock content %}

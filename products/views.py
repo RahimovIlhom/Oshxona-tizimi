@@ -50,7 +50,11 @@ def cashier_view(request):
                     'objects': objects,
                 }
             today = datetime.date.today()
-            today_orders = Order.objects.filter(ordered_date__gte=today)
+            today_orders = reversed(Order.objects.filter(ordered_date__gte=today))
+            try:
+                today_orders = today_orders[10]
+            except:
+                pass
             context['today_orders'] = today_orders
             return render(request, 'profession-cashier.html', context)
         else:
@@ -245,20 +249,16 @@ class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     # user superuser ekanini tekshirish
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.profession == 'accountant'
 
 class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Category
     template_name = 'admin_page/update_category.html'
     fields = ['name']
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
     # user superuser ekanini tekshirish
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.profession == 'accountant'
 
 
 class CategoryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -268,7 +268,7 @@ class CategoryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     # user superuser ekanini tekshirish
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.profession == 'accountant'
 
 @login_required
 def products_view(request):
@@ -288,26 +288,31 @@ class ProductCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     # user superuser ekanini tekshirish
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.profession == 'accountant'
 
 class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     template_name = 'admin_page/update_product.html'
     fields = ['name', 'price', 'discount_price', 'category',]
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-    # user superuser ekanini tekshirish
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.profession == 'accountant'
 
 class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
     template_name = 'admin_page/delete_product.html'
     success_url = reverse_lazy('products')
 
+    def test_func(self):
+        return self.request.user.profession == 'accountant'
+
+class OrderUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Order
+    template_name = 'admin_page/update_order.html'
+    fields = ['order_completed']
+
+    success_url = reverse_lazy('admin_page1')
+
     # user superuser ekanini tekshirish
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.profession == 'accountant'

@@ -1,3 +1,4 @@
+from logging import Manager
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
@@ -81,10 +82,11 @@ def all_users_view(request):
         return redirect('/page/not_found/')
 
 
-# class DeleteUserView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-#     model = EmployeeUser
-#     template_name = 'admin_page/deleteuser.html'
-#     success_url = reverse_lazy('users')
-#
-#     def test_func(self):
-#         return self.request.user.is_superuser
+@login_required
+def delete_user_view(request, username):
+    if request.user.is_superuser:
+        user = EmployeeUser.objects.filter(username=username)
+        user.delete()
+        return redirect('/accounts/admin/users')
+    else:
+        return redirect('/page/not_found/')

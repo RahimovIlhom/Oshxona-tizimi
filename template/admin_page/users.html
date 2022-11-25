@@ -19,7 +19,7 @@
       <th scope="col">Email address</th>
       <th scope="col">Profession</th>
       <th scope="col">Phone</th>
-      <th scope="col">O'chirmoqchimisiz?</th>
+      <th scope="col">Staff status</th>
     </tr>
   </thead>
   <tbody>
@@ -31,8 +31,13 @@
       <td>{{ user.email }}</td>
       <td>{{ user.profession }}</td>
       <td>{{ user.phone }}</td>
-      <td>
-<!--        <a href="{% url 'deleteuser' user.username %}" class="btn btn-danger">O'chirish</a></td>-->
+      <td class="field-is_staff">
+        {% if user.is_staff %}
+        <img src="/static/assets/img/yes.png" width="25" alt="True">
+        {% else %}
+        <img src="/static/assets/img/no.png" width="25" alt="False">
+        {% endif %}
+      </td>
     </tr>
   {% endfor %}
   </tbody>

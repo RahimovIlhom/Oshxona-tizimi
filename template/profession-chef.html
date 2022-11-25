@@ -10,7 +10,7 @@
 
 <table class="table table-hover">
   <thead>
-    <tr class="table table-dark">
+    <tr tr class="table table-success">
       <th scope="col">Number</th>
       <th scope="col">Mahsulotlar</th>
       <th scope="col">Buyurtma vaqti</th>
@@ -23,8 +23,8 @@
     <tr>
       <th scope="row">{{ order.ref_code }}</th>
       <td>{% for order_product in order.products.all %}
-        <button type="button" class="btn btn-light">
-            {{ order_product.product.name }} <span class="badge text-bg-secondary">{{ order_product.quantity }}</span>
+        <button type="button" class="btn btn-warning">
+            <h6>{{ order_product.product.name }} <span class="badge text-bg-secondary">{{ order_product.quantity }}</span></h6>
         </button>
 
         {% endfor %}

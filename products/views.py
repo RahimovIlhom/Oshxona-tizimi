@@ -50,7 +50,7 @@ def cashier_view(request):
                     'objects': objects,
                 }
             today = datetime.date.today()
-            today_orders = reversed(Order.objects.filter(ordered_date__gte=today))
+            today_orders = reversed(Order.objects.filter(ordered_date__gte=today, ordered=True))
             try:
                 today_orders = today_orders[10]
             except:
@@ -114,6 +114,8 @@ def remove_from_card(request, id):
             )[0]
             order.products.remove(order_product)
             order_product.delete()
+            order.cash = order.get_total()
+            order.save()
             # messages.info(request, "Bu mahsulot olib tashlandi!")
             return redirect('/profession/cashier')
         else:
@@ -187,7 +189,7 @@ def chef_view(request):
 def accountant_view(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
         today = datetime.date.today()
-        today_orders = Order.objects.filter(ordered_date__gte=today)
+        today_orders = Order.objects.filter(ordered_date__gte=today, ordered=True)
         orders_price = list(map(lambda order: order.get_order_price(), today_orders))
         summa = sum(orders_price)
         return render(request, 'admin_page/home.html', {
@@ -202,7 +204,7 @@ def accountant_view1(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
         today = datetime.date.today()
         week = datetime.date.today() - datetime.timedelta(days=7)
-        week_orders = Order.objects.filter(ordered_date__gte=week)
+        week_orders = Order.objects.filter(ordered_date__gte=week, ordered=True)
         orders_price = list(map(lambda order: order.get_order_price(), week_orders))
         summa = sum(orders_price)
         return render(request, 'admin_page/home1.html', {
@@ -219,7 +221,7 @@ def accountant_view2(request):
     if request.user.is_superuser or request.user.profession == 'accountant':
         today = datetime.date.today()
         month = datetime.date.today() - datetime.timedelta(days=30)
-        month_orders = Order.objects.filter(ordered_date__gte=month)
+        month_orders = Order.objects.filter(ordered_date__gte=month, ordered=True)
         orders_price = list(map(lambda order: order.get_order_price(), month_orders))
         summa = sum(orders_price)
         return render(request, 'admin_page/home2.html', {
@@ -247,7 +249,6 @@ class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     template_name = 'admin_page/create_category.html'
     fields = ['name', ]
 
-    # user superuser ekanini tekshirish
     def test_func(self):
         return self.request.user.profession == 'accountant'
 
@@ -256,7 +257,6 @@ class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'admin_page/update_category.html'
     fields = ['name']
 
-    # user superuser ekanini tekshirish
     def test_func(self):
         return self.request.user.profession == 'accountant'
 
@@ -266,7 +266,6 @@ class CategoryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = 'admin_page/delete_category.html'
     success_url = reverse_lazy('categories')
 
-    # user superuser ekanini tekshirish
     def test_func(self):
         return self.request.user.profession == 'accountant'
 
@@ -315,4 +314,4 @@ class OrderUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     # user superuser ekanini tekshirish
     def test_func(self):
-        return self.request.user.profession == 'accountant'
+        return self.request.user.is_superuser

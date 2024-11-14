@@ -4,6 +4,11 @@ crispy-bootstrap4==2024.10
 Django==4.2
 django-bootstrap4==24.4
 django-crispy-forms==2.3
+environs==11.1.0
+marshmallow==3.23.1
+packaging==24.2
+python-dotenv==1.0.1
 soupsieve==2.6
 sqlparse==0.5.1
 typing_extensions==4.12.2
+whitenoise==6.8.2

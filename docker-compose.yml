@@ -24,7 +24,7 @@ services:
     container_name: oshxona_nginx
     restart: always
     ports:
-      - "80:80"   # HTTP
+      - "81:80"   # HTTP
       - "443:443" # HTTPS
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Nginx konfiguratsiya faylini konteynerga ko'chirish

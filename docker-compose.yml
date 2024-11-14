@@ -13,37 +13,38 @@ services:
     environment:
       - DJANGO_DEBUG=${DJANGO_DEBUG}
       - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
-      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}  # .env faylidan o'qilgan
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
     env_file:
-      - .env  # .env faylini konteynerga kiritish
+      - .env
     networks:
       - backend
-    command: gunicorn --bind 0.0.0.0:8000 config.wsgi:application  # Gunicorn bilan ishga tushirish
+    command: gunicorn --bind 0.0.0.0:8000 config.wsgi:application
 
-  # Nginx konteyneri (HTTPSni sozlash)
+  # Nginx konteyneri (HTTPSni sozlash uchun)
   nginx:
     image: nginx:latest
     container_name: oshxona_nginx
     restart: always
     ports:
-      - "81:80"   # HTTP
-      - "443:443" # HTTPS
+      - "81:80"    # HTTP
+      - "8443:443" # HTTPS uchun boshqa port
     networks:
       - backend
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Nginx konfiguratsiya faylini konteynerga ko'chirish
-      - ./certs:/etc/letsencrypt  # SSL sertifikatlari uchun papka
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/letsencrypt
       - ./static:/app/static
       - ./media:/app/media
     depends_on:
       - web
 
-  # Certbot konteyneri (SSL sertifikati olish va yangilash uchun)
+  # Certbot konteyneri (SSL sertifikatlari olish uchun)
   certbot:
     image: certbot/certbot
     container_name: oshxona_certbot
     volumes:
       - ./certs:/etc/letsencrypt
+      - /var/www/certbot:/var/www/certbot
     networks:
       - backend
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"

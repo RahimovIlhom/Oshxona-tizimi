@@ -26,8 +26,8 @@ services:
     container_name: oshxona_nginx
     restart: always
     ports:
-      - "81:80"   # HTTP
-      - "444:443" # HTTPS, boshqa dasturlarga halaqit bermaslik uchun 443 o‘rniga 444-portni foydalanamiz
+      - "80:80"   # HTTP
+      - "443:443" # HTTPS, boshqa dasturlarga halaqit bermaslik uchun 443 o‘rniga 444-portni foydalanamiz
     networks:
       - backend
     volumes:

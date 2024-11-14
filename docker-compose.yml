@@ -16,6 +16,7 @@ services:
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}  # .env faylidan o'qilgan
     env_file:
       - .env  # .env faylini konteynerga kiritish
+    command: gunicorn --bind 0.0.0.0:8000 config.wsgi:application  # Gunicorn bilan ishga tushirish
 
   # Nginx konteyneri (HTTPSni sozlash)
   nginx:
@@ -28,6 +29,8 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Nginx konfiguratsiya faylini konteynerga ko'chirish
       - ./certs:/etc/letsencrypt  # SSL sertifikatlari uchun papka
+      - ./static:/app/static
+      - ./media:/app/media
     depends_on:
       - web
 
@@ -40,6 +43,5 @@ services:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 networks:
-  default:
-    external:
-      name: nginx_network  # Nginx va Django ilovasi o'rtasida tarmoqni bog'lash
+  nginx_network:
+    external: true

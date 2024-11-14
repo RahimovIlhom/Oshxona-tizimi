@@ -5,6 +5,7 @@ Django==4.2
 django-bootstrap4==24.4
 django-crispy-forms==2.3
 environs==11.1.0
+gunicorn==23.0.0
 marshmallow==3.23.1
 packaging==24.2
 python-dotenv==1.0.1

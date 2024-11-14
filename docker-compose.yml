@@ -11,8 +11,8 @@ services:
     volumes:
       - .:/app
     environment:
-      - DEBUG=${DEBUG}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - DJANGO_DEBUG=${DJANGO_DEBUG}
+      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}  # .env faylidan o'qilgan
     env_file:
       - .env  # .env faylini konteynerga kiritish
